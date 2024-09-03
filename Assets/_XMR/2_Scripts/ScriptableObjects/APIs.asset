@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cd5e3bed9d4a034c9fe0bf1606e4b72, type: 3}
+  m_Name: APIs
+  m_EditorClassIdentifier: 
+  productionBaseURl: https://api.wyrai.com/api/
+  developementBaseURL: https://api.dev.wyrai.com/api/
+  localBaseURL: http://192.168.1.46:5000/api/
+  GetCartonCountURL: https://ml.wyrai.com/carton/carton_counter_fs
+  loginEndPoint: registration/login
+  dashboardEndPoint: meta_dashboard/dashboard_get
+  GetS3EndPoint: videoInspection/image_S3
+  S3PostCommentsEndPoint: videoInspection/image_Url
+  getDocsEndPoint: required_docs/docs_get
+  addDocsEndPoint: required_docs/docs_add
+  updateDocsEndPoint: required_docs/docs_update
+  getCriteriaEndPoint: inspection_criteria/criteriaGet
+  addCriteriaEndPoint: inspection_criteria/criteriaAdd
+  updateCriteriaEndPoint: inspection_criteria/criteriaUpdate
+  barcodeScannerEndPoint: barcode/barcodeScanner
+  map_user_nameEndPoint: live/userChannel
+  GetUserNameEndpoint: live/userChannel
+  ShareChannelEndPoint: live/channel
+  EndInspectionEndPoint: videoInspection/reportGenrate

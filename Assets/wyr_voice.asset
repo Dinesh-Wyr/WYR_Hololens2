@@ -1,0 +1,789 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5552474163321571902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1c2918ba0e7451694416d42d69e0944, type: 3}
+  m_Name: WitComposerData
+  m_EditorClassIdentifier: 
+  canvases:
+  - canvasName: Draft
+    contextMap:
+      server: []
+      client: []
+      shared: []
+    actions:
+    - '"DropPin"'
+    - '"End"'
+    - '"Keep Voice On"'
+    - '"KeepListening"'
+    - '"KeepVoiceOn"'
+    - '"RecordingOff"'
+    - '"RecordingOn"'
+    - '"VoiceOn"'
+  - canvasName: Live
+    contextMap:
+      server: []
+      client: []
+      shared: []
+    actions:
+    - '"DropPin"'
+    - '"End"'
+    - '"Keep Voice On"'
+    - '"KeepListening"'
+    - '"KeepVoiceOn"'
+    - '"RecordingOff"'
+    - '"RecordingOn"'
+    - '"VoiceOn"'
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae5a46bda3295124c99b0e6537ac7252, type: 3}
+  m_Name: wyr_voice
+  m_EditorClassIdentifier: 
+  _clientAccessToken: X6KHRTNYKIDQIQGIJROMAIKCFCYN3FRW
+  _appInfo:
+    name: app1
+    id: 6976874412433390
+    lang: en
+    isPrivate: 1
+    createdAt: 2024-01-02T21:52:35-0800
+    trainingStatus: 1
+    lastTrainDuration: 64
+    lastTrainedAt: 2024-07-23T03:31:16-0700
+    nextTrainAt: 2024-07-23T03:30:12-0700
+    intents:
+    - id: 298761203178782
+      name: Drop_Pin
+      entities:
+      - name: pin:pin
+        id: 2304794226398260
+    - id: 919539646366345
+      name: Remove_Pin
+      entities:
+      - name: pin:pin
+        id: 2304794226398260
+      - name: pointer:pointer
+        id: 472645395109837
+    - id: 1262985688440869
+      name: clear_all_lines
+      entities:
+      - name: clear:clear
+        id: 374684461929638
+      - name: line:line
+        id: 1136422380699311
+    - id: 856469373020925
+      name: clear_defect
+      entities:
+      - name: clear:clear
+        id: 374684461929638
+    - id: 776488497877086
+      name: clear_measurement
+      entities:
+      - name: clear:clear
+        id: 374684461929638
+      - name: line:line
+        id: 1136422380699311
+    - id: 2798645626941206
+      name: clear_pins
+      entities:
+      - name: pin:pin
+        id: 2304794226398260
+    - id: 391767113550870
+      name: count
+      entities:
+      - name: carton:carton
+        id: 329396622923682
+    - id: 1064063544700903
+      name: destroy
+      entities:
+      - name: line:line
+        id: 1136422380699311
+    - id: 471072408980125
+      name: erase_lines
+      entities:
+      - name: erase:erase
+        id: 1147722409615738
+      - name: line:line
+        id: 1136422380699311
+    - id: 288319020979997
+      name: exit
+      entities: []
+    - id: 1569420420292192
+      name: hide_screen
+      entities:
+      - name: screen:screen
+        id: 291110497303297
+    - id: 808440901206800
+      name: mark
+      entities: []
+    - id: 370592935887138
+      name: mark_defect
+      entities:
+      - name: defect:defect
+        id: 1709616976458515
+      - name: mark:mark
+        id: 373215132301681
+    - id: 783030483885853
+      name: measure_all
+      entities: []
+    - id: 900078694931157
+      name: note
+      entities:
+      - name: comment:comment
+        id: 1358648864824033
+    - id: 1598875174222287
+      name: remove_defect
+      entities:
+      - name: defect:defect
+        id: 1709616976458515
+      - name: mark:mark
+        id: 373215132301681
+    - id: 2250654178608856
+      name: remove_measure
+      entities:
+      - name: line:line
+        id: 1136422380699311
+    - id: 1385027455489103
+      name: save_comments
+      entities: []
+    - id: 1534836050444300
+      name: scan_barcode
+      entities:
+      - name: barcode:barcode
+        id: 852371003482528
+      - name: scan:scan
+        id: 8658012827559428
+    - id: 1114201479775473
+      name: screenshot
+      entities:
+      - name: picture:picture
+        id: 1170713700972186
+    - id: 777521070803465
+      name: show_screen
+      entities:
+      - name: screen:screen
+        id: 291110497303297
+    - id: 278797291944167
+      name: start_voice_call
+      entities:
+      - name: call:call
+        id: 384205794577021
+      - name: chat:chat
+        id: 2308842082822893
+      - name: voice:voice
+        id: 905215337829939
+    - id: 763223282536143
+      name: stop_marking
+      entities:
+      - name: defect:defect
+        id: 1709616976458515
+      - name: mark:mark
+        id: 373215132301681
+    - id: 775715957435092
+      name: stream_off
+      entities:
+      - name: stream:stream
+        id: 2115144885489065
+    - id: 1262142758033334
+      name: stream_on
+      entities:
+      - name: stream:stream
+        id: 2115144885489065
+    - id: 368939656024376
+      name: to_cm
+      entities: []
+    - id: 286146387671484
+      name: to_inch
+      entities: []
+    - id: 279906475073761
+      name: voice_off
+      entities:
+      - name: voice:voice
+        id: 905215337829939
+    - id: 893062502189023
+      name: voice_on
+      entities:
+      - name: voice:voice
+        id: 905215337829939
+    entities:
+    - name: barcode
+      id: 1165329364678459
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: barcode
+        id: 852371003482528
+      keywords:
+      - keyword: barcode
+        synonyms:
+        - barcode
+    - name: call
+      id: 795095075846382
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: call
+        id: 384205794577021
+      keywords:
+      - keyword: call
+        synonyms:
+        - call
+    - name: carton
+      id: 1284659376269893
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: carton
+        id: 329396622923682
+      keywords:
+      - keyword: Box
+        synonyms:
+        - box
+      - keyword: boxes
+        synonyms:
+        - boxes
+      - keyword: carton
+        synonyms:
+        - carton
+      - keyword: cartons
+        synonyms:
+        - cartons
+    - name: chat
+      id: 1452409152363840
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: chat
+        id: 2308842082822893
+      keywords:
+      - keyword: chat
+        synonyms:
+        - chat
+      - keyword: chatting
+        synonyms:
+        - chatting
+    - name: clear
+      id: 829062398870325
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: clear
+        id: 374684461929638
+      keywords:
+      - keyword: clear
+        synonyms:
+        - clear
+    - name: comment
+      id: 294653460370358
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: comment
+        id: 1358648864824033
+      keywords:
+      - keyword: comment
+        synonyms:
+        - comment
+      - keyword: remark
+        synonyms:
+        - remark
+    - name: defect
+      id: 398947486063696
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: defect
+        id: 1709616976458515
+      keywords:
+      - keyword: defect
+        synonyms:
+        - defect
+    - name: erase
+      id: 990505979441672
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: erase
+        id: 1147722409615738
+      keywords:
+      - keyword: erase
+        synonyms:
+        - erase
+    - name: line
+      id: 1106534500595962
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: line
+        id: 1136422380699311
+      keywords:
+      - keyword: line
+        synonyms:
+        - line
+    - name: mark
+      id: 2686106184903329
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: mark
+        id: 373215132301681
+      keywords:
+      - keyword: draw
+        synonyms:
+        - draw
+      - keyword: drawing
+        synonyms:
+        - drawing
+      - keyword: mark
+        synonyms:
+        - mark
+        - marki
+      - keyword: marki
+        synonyms:
+        - marki
+      - keyword: marking
+        synonyms:
+        - marking
+    - name: measure
+      id: 1486358428649760
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: measure
+        id: 1198607851314948
+      keywords:
+      - keyword: measure
+        synonyms:
+        - measure
+    - name: measurement
+      id: 342529881661447
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: measurement
+        id: 1090092002268623
+      keywords:
+      - keyword: measure
+        synonyms:
+        - measure
+      - keyword: measurement
+        synonyms:
+        - measurement
+    - name: picture
+      id: 1337322696935037
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: picture
+        id: 1170713700972186
+      keywords:
+      - keyword: screenshot
+        synonyms:
+        - screenshot
+    - name: pin
+      id: 391407176766023
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: pin
+        id: 2304794226398260
+      keywords:
+      - keyword: Pin
+        synonyms:
+        - pin
+    - name: pointer
+      id: 989807298734279
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: pointer
+        id: 472645395109837
+      keywords:
+      - keyword: dot
+        synonyms:
+        - dot
+      - keyword: pointer
+        synonyms:
+        - pointer
+    - name: record
+      id: 244605841993193
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: record
+        id: 716130300616058
+      keywords:
+      - keyword: recording
+        synonyms:
+        - recordin
+        - recording
+    - name: scan
+      id: 2258219054514019
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: scan
+        id: 8658012827559428
+      keywords:
+      - keyword: scan
+        synonyms:
+        - scan
+    - name: screen
+      id: 355022737169015
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: screen
+        id: 291110497303297
+      keywords:
+      - keyword: screen
+        synonyms:
+        - screen
+    - name: stream
+      id: 1365933080735644
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: stream
+        id: 2115144885489065
+      keywords:
+      - keyword: stream
+        synonyms:
+        - stream
+      - keyword: streaming
+        synonyms:
+        - streaming
+    - name: voice
+      id: 886289662875436
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: voice
+        id: 905215337829939
+      keywords:
+      - keyword: voice
+        synonyms:
+        - voice
+    traits: []
+    versionTags: []
+    voices:
+    - name: wit$Rebecca
+      locale: en_US
+      gender: female
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Charlie
+      locale: en_US
+      gender: male
+      styles:
+      - default
+      - soft
+      - fast
+      - projected
+    - name: wit$Cooper
+      locale: en_US
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Vampire
+      locale: en_US
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Prospector
+      locale: en_US
+      gender: male
+      styles:
+      - default
+    - name: wit$Cody
+      locale: en_US
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Remi
+      locale: en_US
+      gender: female
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Cam
+      locale: en_US
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Connor
+      locale: en_US
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Railey
+      locale: en_US
+      gender: female
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Cael
+      locale: en_US
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Carl
+      locale: en_US
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Rubie
+      locale: en_US
+      gender: female
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Overconfident
+      locale: en_US
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Disaffected
+      locale: en_US
+      gender: female
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Hollywood
+      locale: en_US
+      gender: female
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Trendy
+      locale: en_US
+      gender: female
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Cartoon Baby
+      locale: en_US
+      gender: nonbinary
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Surfer
+      locale: en_US
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Southern Accent
+      locale: en_US
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Kenyan Accent
+      locale: en_US
+      gender: female
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Cartoon Kid
+      locale: en_US
+      gender: female
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Cartoon Villain
+      locale: en_US
+      gender: female
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Rosie
+      locale: en_CA
+      gender: female
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Colin
+      locale: en_CA
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Pirate
+      locale: en_GB
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$British Butler
+      locale: en_GB
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Whimsical
+      locale: en_GB
+      gender: female
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Wizard
+      locale: en_GB
+      gender: male
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+    - name: wit$Cockney Accent
+      locale: en_GB
+      gender: nonbinary
+      styles:
+      - default
+      - soft
+      - formal
+      - fast
+      - projected
+  _configData:
+  - {fileID: -5552474163321571902}
+  _configurationId: 7ca440e5-e652-45c9-876b-40faaefe627c
+  timeoutMS: 10000
+  endpointConfiguration:
+    _uriScheme: 
+    _authority: 
+    _port: 0
+    _witApiVersion: 
+    _message: 
+    _speech: 
+    _dictation: 
+    _synthesize: 
+    _event: 
+    _converse: 
+  isDemoOnly: 0
+  useConduit: 1
+  _manifestLocalPath: ConduitManifest-055cfdf6-b73e-4b40-8f4e-145da8289f92.json
+  excludedAssemblies:
+  - Oculus.Voice.Demo, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Meta.WitAi.Samples, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  relaxedResolution: 0
