@@ -62,7 +62,7 @@
       "dependencies": {}
     },
     "com.microsoft.spatialaudio.spatializer.unity": {
-      "version": "file:../../../ExternalDependencies/com.microsoft.spatialaudio.spatializer.unity-2.0.55.tgz",
+      "version": "file:MixedReality/com.microsoft.spatialaudio.spatializer.unity-2.0.55.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {}
