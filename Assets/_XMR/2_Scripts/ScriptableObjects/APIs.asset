@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   productionBaseURl: https://api.wyrai.com/api/
   developementBaseURL: https://api.dev.wyrai.com/api/
-  localBaseURL: http://192.168.1.46:5000/api/
+  localBaseURL: http://192.168.1.48:5000/api/
   GetCartonCountURL: https://ml.dev.wyrai.com/carton/carton_counter_fs
   loginEndPoint: registration/login
   dashboardEndPoint: meta_dashboard/dashboard_get

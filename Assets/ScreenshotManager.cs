@@ -347,8 +347,8 @@ public class ScreenshotManager : MonoBehaviour
         int nativeHeight = height;
 
         // Calculate the maximum texture size based on the RawImage's size
-        int maxWidth = 900;
-        int maxHeight = 900;
+        int maxWidth = 1440;
+        int maxHeight = 1440;
 
         // Calculate the scale factor to fit the image within the RawImage while maintaining aspect ratio
         float scaleFactor = Mathf.Min((float)maxWidth / nativeWidth, (float)maxHeight / nativeHeight);
