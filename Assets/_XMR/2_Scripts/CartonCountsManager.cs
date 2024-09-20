@@ -36,33 +36,53 @@ public class CartonCountsManager : MonoBehaviour
 
         Debug.Log(GetCartonCountURL);
     }
-
+/*
     public void GetCartonCount(Texture2D texture)
     {
 
         //string filePath = ScreenshotManager.Instance.FilePath;
         //Debug.Log("Carton Count FilePath = " + filePath);
-        ScreenshotManager.Instance.SetText("GetCartonCount");
+        //MRTKScreenshotManager.Instance.SetText("GetCartonCount");
         //byte[] bodyRaw = texture.GetRawTextureData();
         byte[] bodyRaw = ImageConversion.EncodeArrayToPNG(texture.GetRawTextureData(), texture.graphicsFormat, (uint)texture.width, (uint)texture.height);
         Debug.Log("File Size: " + bodyRaw.Length);
         //string savePath = Application.dataPath + "/saved_image.png";
         //File.WriteAllBytes(savePath, bodyRaw);
-        ScreenshotManager.Instance.SetText("File Size: " + bodyRaw.Length);
+       // MRTKScreenshotManager.Instance.SetText("File Size: " + bodyRaw.Length);
         StartCoroutine(ApiCallUtility.Instance.SendImage(Method.POST, GetCartonCountURL, bodyRaw, CartonCountCallback));
     }
+*/
 
+    public void GetCartonCount(Texture2D texture)
+    {
+        PreviewScreenshot.Instance.pngTextureBytes = ImageConversion.EncodeArrayToPNG(texture.GetRawTextureData(), texture.graphicsFormat, (uint)texture.width, (uint)texture.height);
+        PreviewScreenshot.Instance.pngImageName = "Cartons_" + System.DateTime.Now;
+        StartCoroutine(ApiCallUtility.Instance.SendImage(Method.POST, GetCartonCountURL, PreviewScreenshot.Instance.pngTextureBytes, CartonCountCallback));
+    }
 
     public void CartonCountCallback(string responseText)
     {
-        ScreenshotManager.Instance.SetText("CartonCountCallback");
         Debug.Log("Got Carton Count");
         CartonCountResponse response = JsonUtility.FromJson<CartonCountResponse>(responseText);
         string count = response.count.ToString();
 
         //StartCoroutine(SaveComments(count));
-        ScreenshotManager.Instance.DisplayCartonPreview(response.preview, count);
+        PreviewScreenshot.Instance.DisplayCartonPreview(response.preview, count);
 
     }
+/*
+    public void CartonCountCallback(string responseText)
+    {
+        MRTKScreenshotManager.Instance.SetText("CartonCountCallback");
+        Debug.Log("Got Carton Count");
+        CartonCountResponse response = JsonUtility.FromJson<CartonCountResponse>(responseText);
+        string count = response.count.ToString();
+
+        //StartCoroutine(SaveComments(count));
+        MRTKScreenshotManager.Instance.DisplayCartonPreview(response.preview, count);
+
+    }
+*/
+
 
 }

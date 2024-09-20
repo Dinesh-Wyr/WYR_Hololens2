@@ -17,6 +17,8 @@ namespace MixedReality.Toolkit.Examples.Demos
     [AddComponentMenu("MRTK/Examples/Dictation Handler")]
     public class DictationHandler : MonoBehaviour
     {
+
+        public static DictationHandler Instance;
         /// <summary>
         /// Wrapper of UnityEvent&lt;string&gt; for serialization.
         /// </summary>
@@ -50,6 +52,16 @@ namespace MixedReality.Toolkit.Examples.Demos
         private IDictationSubsystem dictationSubsystem = null;
         private IKeywordRecognitionSubsystem keywordRecognitionSubsystem = null;
 
+
+        [HideInInspector]
+        public string recognized = "";
+
+        private void Awake()
+        {
+            if(Instance == null)
+                Instance = this;
+        }
+
         /// <summary>
         /// Start dictation on a DictationSubsystem.
         /// </summary>
@@ -82,24 +94,25 @@ namespace MixedReality.Toolkit.Examples.Demos
 
         private void DictationSubsystem_RecognitionFaulted(DictationSessionEventArgs obj)
         {
-            OnRecognitionFaulted.Invoke("Recognition faulted. Reason: " + obj.ReasonString);
+            OnRecognitionFaulted.Invoke(obj.ReasonString);
             HandleDictationShutdown();
         }
 
         private void DictationSubsystem_RecognitionFinished(DictationSessionEventArgs obj)
         {
-            OnRecognitionFinished.Invoke("Recognition finished. Reason: " + obj.ReasonString);
+            OnRecognitionFinished.Invoke(obj.ReasonString);
             HandleDictationShutdown();
         }
 
         private void DictationSubsystem_Recognized(DictationResultEventArgs obj)
         {
-            OnSpeechRecognized.Invoke("Recognized:" + obj.Result);
+            recognized += " " + obj.Result;
+            OnSpeechRecognized.Invoke(recognized);
         }
 
         private void DictationSubsystem_Recognizing(DictationResultEventArgs obj)
         {
-            OnSpeechRecognizing.Invoke("Recognizing:" + obj.Result);
+            OnSpeechRecognizing.Invoke(obj.Result);
         }
 
         /// <summary>
@@ -110,6 +123,7 @@ namespace MixedReality.Toolkit.Examples.Demos
             if (dictationSubsystem != null)
             {
                 dictationSubsystem.StopDictation();
+                recognized = "";
             }
         }
 

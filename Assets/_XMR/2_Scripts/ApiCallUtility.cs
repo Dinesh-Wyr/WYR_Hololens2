@@ -64,7 +64,7 @@ public class ApiCallUtility : MonoBehaviour
             www.SetRequestHeader("Content-Type", "application/json");
         }
 
-        www.SetRequestHeader("authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjZmZTdkNzIwMWExMDU3OWYzZDBhOTMiLCJpYXQiOjE3MjU1MzQzMjMsImV4cCI6MTcyNjEzOTEyM30.x3rk0l-qLz0mRRH9dInIncG3GYp6CdJPtwXtqCETG-o");
+        www.SetRequestHeader("authorization", "Bearer " + GlobalData.Token);
 
         yield return www.SendWebRequest();
         Debug.Log(www.result);
@@ -108,13 +108,13 @@ public class ApiCallUtility : MonoBehaviour
             if (request.result == UnityWebRequest.Result.ConnectionError ||
                 request.result == UnityWebRequest.Result.ProtocolError)
             {
-                ScreenshotManager.Instance.SetText("Error Posting image: " + request.error);
+                MRTKScreenshotManager.Instance.SetText("Error Posting image: " + request.error);
                 Debug.Log("Error Posting image: " + request.error);
                 yield break;
             }
             else
             {
-                ScreenshotManager.Instance.SetText("FILE UPLOADED");
+                MRTKScreenshotManager.Instance.SetText("FILE UPLOADED");
                 Debug.Log("FILE UPLOADED");
                 Debug.Log("Server response: " + request.downloadHandler.text);
                 if (callback != null)

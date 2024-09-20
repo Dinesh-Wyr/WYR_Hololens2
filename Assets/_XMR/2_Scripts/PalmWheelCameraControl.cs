@@ -17,21 +17,25 @@ public class PalmWheelCameraControl : MonoBehaviour
     GameObject QuestGuideFrame;
     public void ToggleTab()
     {
+
+        if (MRTKScreenshotManager.Instance.isScreenshot && MRTKScreenshotManager.Instance.isCartons)
+            return;
+
         isActive = !isActive;
 
         if (isActive)
         {
             imageComponent.color = activatedColor;
-            if (QuestGuideFrame != null)
-                QuestGuideFrame.SetActive(false);
+            //if (QuestGuideFrame != null)
+            //    QuestGuideFrame.SetActive(false);
         }
         else
         {
             imageComponent.color = deactivatedColor;
-            if (QuestGuideFrame != null)
-                QuestGuideFrame.SetActive(true);
+            //if (QuestGuideFrame != null)
+              //  QuestGuideFrame.SetActive(true);
         }
 
-        PalmWheelManager.Instance.UseExternalCamera = isActive;
+        //PalmWheelManager.Instance.UseExternalCamera = isActive;
     }
 }

@@ -1,3 +1,4 @@
+using MixedReality.Toolkit.UX;
 using System;
 using System.Collections;
 using System.IO;
@@ -58,7 +59,7 @@ public class BarcodeManager : MonoBehaviour
     [SerializeField]
     TMP_Text matchStatus;
     [SerializeField]
-    Button barcodeSaveButton;
+    PressableButton barcodeSaveButton;
 
     byte[] fileData;
 
@@ -118,14 +119,16 @@ public class BarcodeManager : MonoBehaviour
         //previewImage.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one * 0.5f);
     }
 
+    Texture2D tempTexture;
+
     public void SendBarcodeForScan(Texture2D texture)
     {
-
+        tempTexture = texture;
         byte[] bodyRaw = ImageConversion.EncodeArrayToPNG(texture.GetRawTextureData(), texture.graphicsFormat, (uint)texture.width, (uint)texture.height);
         WWWForm form = new WWWForm();
         form.AddBinaryData("file", bodyRaw);
-        form.AddField("plid", tempPL);
-        form.AddField("poid", tempPO);
+        form.AddField("plid", GlobalData.plid);
+        form.AddField("poid", GlobalData.poid);
 
         //BarcodePreviewUI.SetActive(false);
 
@@ -171,32 +174,33 @@ public class BarcodeManager : MonoBehaviour
         Debug.Log("barcode response : "+response);
         Debug.Log(response);
         BarcodeResponse = JsonUtility.FromJson<BarcodeResponse>(response);
-        //BarcodeResultUI.SetActive(true);
+        BarcodeResultUI.SetActive(true);
 
         if(BarcodeResponse != null)
         {
-            ScreenshotManager.Instance.SetText("barcode - message" + BarcodeResponse.message);
+            PopulateUI();
+            //MRTKScreenshotManager.Instance.SetText("barcode - message" + BarcodeResponse.message);
         }
         else
         {
-            ScreenshotManager.Instance.SetText("barcode - could not parse response");
+            //MRTKScreenshotManager.Instance.SetText("barcode - could not parse response");
             Debug.Log("barcode - could not parse response");
         }
     }
 
-    /*
+    
     void PopulateUI()
-    {
+    {/*
         Debug.Log("barcode - inspection image path : " + FilePath);
 
         byte[] fileData = File.ReadAllBytes(FilePath);
         Texture2D tex = new(2, 2, TextureFormat.RGBA32, false);
         tex.LoadImage(fileData);
-
-        inspectionImage.texture = tex;
+*/
+        inspectionImage.texture = tempTexture;
         //inspectionImage.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one * 0.5f);
 
-        //StartCoroutine(PopulatePOImage());
+        StartCoroutine(PopulatePOImage());
 
         Debug.Log("barcode - message" + BarcodeResponse.message);
         matchStatus.text = BarcodeResponse.message;
@@ -218,11 +222,11 @@ public class BarcodeManager : MonoBehaviour
             //poImage.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one * 0.5f);
         }
 
-        barcodeSaveButton.onClick.RemoveAllListeners();
-        barcodeSaveButton.onClick.AddListener(delegate
+        barcodeSaveButton.OnClicked.RemoveAllListeners();
+        barcodeSaveButton.OnClicked.AddListener(delegate
         {
             BarcodeResultUI.SetActive(false);
             StartCoroutine(SaveCommentsManager.Instance.SaveComments(matchStatus.text));
         });
-    }*/
+    }
 }

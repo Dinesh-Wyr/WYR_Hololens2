@@ -1,13 +1,10 @@
 {
   "dependencies": {
-    "com.meta.xr.sdk.voice": "67.0.0",
-    "com.meta.xr.sdk.voice.composer": "64.0.0",
-    "com.meta.xr.sdk.voice.dictation": "64.0.0",
-    "com.meta.xr.sdk.voice.telemetry": "64.0.0",
     "com.microsoft.mixedreality.input": "file:MixedReality/com.microsoft.mixedreality.input-0.9.2006.tgz",
     "com.microsoft.mixedreality.openxr": "file:MixedReality/com.microsoft.mixedreality.openxr-1.11.1.tgz",
     "com.microsoft.mrtk.graphicstools.unity": "file:MixedReality/com.microsoft.mrtk.graphicstools.unity-0.7.1.tgz",
     "com.microsoft.mrtk.tts.windows": "file:MixedReality/com.microsoft.mrtk.tts.windows-1.0.4.tgz",
+    "com.microsoft.spatialaudio.spatializer.unity": "file:MixedReality/com.microsoft.spatialaudio.spatializer.unity-2.0.55.tgz",
     "com.unity.ai.navigation": "1.1.5",
     "com.unity.asset-store-validation": "0.5.1",
     "com.unity.collab-proxy": "2.4.3",
@@ -70,8 +67,7 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0",
-    "com.microsoft.spatialaudio.spatializer.unity": "file:MixedReality/com.microsoft.spatialaudio.spatializer.unity-2.0.55.tgz"
+    "com.unity.modules.xr": "1.0.0"
   },
   "testables": [
     "com.unity.inputsystem",

@@ -57,7 +57,7 @@ namespace MixedReality.Toolkit.Examples.Demos
             // Initially hide the preview.
             if (mixedRealityKeyboardPreview != null)
             {
-                mixedRealityKeyboardPreview.gameObject.SetActive(false);
+                //mixedRealityKeyboardPreview.gameObject.SetActive(false);
             }
 
 #if WINDOWS_UWP
