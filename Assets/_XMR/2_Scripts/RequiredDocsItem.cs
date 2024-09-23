@@ -30,7 +30,6 @@ public class RequiredDocsItem : MonoBehaviour
         row.vendor = vendor.isOn;
         row.not = notAvailable.isOn;
         row.remarks = remarks.text;
-
         return row;
     }
 

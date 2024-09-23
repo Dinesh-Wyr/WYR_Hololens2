@@ -124,9 +124,10 @@ public class BarcodeManager : MonoBehaviour
     public void SendBarcodeForScan(Texture2D texture)
     {
         tempTexture = texture;
-        byte[] bodyRaw = ImageConversion.EncodeArrayToPNG(texture.GetRawTextureData(), texture.graphicsFormat, (uint)texture.width, (uint)texture.height);
+        PreviewScreenshot.Instance.pngTextureBytes = ImageConversion.EncodeArrayToPNG(texture.GetRawTextureData(), texture.graphicsFormat, (uint)texture.width, (uint)texture.height);
+        PreviewScreenshot.Instance.pngImageName = "Barcode_" + System.DateTime.Now;
         WWWForm form = new WWWForm();
-        form.AddBinaryData("file", bodyRaw);
+        form.AddBinaryData("file", PreviewScreenshot.Instance.pngTextureBytes);
         form.AddField("plid", GlobalData.plid);
         form.AddField("poid", GlobalData.poid);
 
@@ -134,7 +135,7 @@ public class BarcodeManager : MonoBehaviour
 
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.POST, url, form: form, callback: GetBarcodeResponse));
     }
-
+/*
     string tempPO = "66deddd951c3ea7223a9b634";
     string tempPL = "66deee8551c3ea7223a9b8b6";
 
@@ -168,7 +169,7 @@ public class BarcodeManager : MonoBehaviour
         Debug.Log(tempPO);
         Debug.Log(tempPL);
     }
-
+*/
     void GetBarcodeResponse(string response)
     {
         Debug.Log("barcode response : "+response);
@@ -196,7 +197,7 @@ public class BarcodeManager : MonoBehaviour
         byte[] fileData = File.ReadAllBytes(FilePath);
         Texture2D tex = new(2, 2, TextureFormat.RGBA32, false);
         tex.LoadImage(fileData);
-*/
+      */
         inspectionImage.texture = tempTexture;
         //inspectionImage.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one * 0.5f);
 

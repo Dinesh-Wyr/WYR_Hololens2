@@ -216,9 +216,7 @@ public class RequiredDocsManager : MonoBehaviour
         doc.isVisited = isVisited;
         doc.skip = skip;
 
-
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.POST, storeUrl, JsonUtility.ToJson(doc), callback: recordResponse));
-
     }
 
     public void UpdateData()

@@ -171,6 +171,7 @@ public class KeyboardManager : MonoBehaviour
             voiceTypingImage.sprite = voiceTypingOn;
             voiceTypingImage.color = voiceTypingOnColor;
             dictationHandler.StartRecognition();
+            dictationHandler.recognized = "";
             Debug.Log("Voice Typing Enabled");
         }
         else
