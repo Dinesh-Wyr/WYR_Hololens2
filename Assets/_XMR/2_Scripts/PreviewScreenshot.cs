@@ -185,6 +185,7 @@ public class PreviewScreenshot : MonoBehaviour
         try
         {
             CommentsConfirmation.SetActive(false);
+            KeyboardManager.Instance.isSaveComments = true;
             KeyboardManager.Instance.OpenCommentsKeyboard();
             Debug.Log(" Opening Keyboard...");
         }

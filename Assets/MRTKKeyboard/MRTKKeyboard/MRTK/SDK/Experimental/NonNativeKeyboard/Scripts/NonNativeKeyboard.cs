@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// (Cleared when keyboard is closed.)
         /// </summary>
         public event EventHandler OnTextSubmitted = delegate { };
+        public static event Action OnEnter;
 
         /// <summary>
         /// Fired every time the text in the InputField changes.
@@ -628,6 +629,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             m_CaretPosition = InputField.caretPosition;
 
+            Debug.Log(m_CaretPosition);
             InputField.text = InputField.text.Insert(m_CaretPosition, value);
             m_CaretPosition += value.Length;
 

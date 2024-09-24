@@ -43,6 +43,7 @@ public class RequiredDocsItem : MonoBehaviour
 
     public void SelectInputField()
     {
+        KeyboardManager.Instance.isSaveComments = false;
         KeyboardManager.Instance.ShowVoiceEnabledKeyboard(remarks);
     }
 }

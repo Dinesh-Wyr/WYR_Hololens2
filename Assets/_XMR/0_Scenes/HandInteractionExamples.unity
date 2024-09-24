@@ -3421,7 +3421,7 @@ MonoBehaviour:
   m_OnSelect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7267580531387548157}
+      - m_Target: {fileID: 1222323531}
         m_TargetAssemblyTypeName: RequiredDocsItem, Assembly-CSharp
         m_MethodName: SelectInputField
         m_Mode: 1
@@ -12760,7 +12760,7 @@ MonoBehaviour:
   m_OnSelect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7267580531387548157}
+      - m_Target: {fileID: 616289581}
         m_TargetAssemblyTypeName: RequiredDocsItem, Assembly-CSharp
         m_MethodName: SelectInputField
         m_Mode: 1
@@ -14878,7 +14878,7 @@ MonoBehaviour:
   m_OnSelect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7267580531387548157}
+      - m_Target: {fileID: 217732182}
         m_TargetAssemblyTypeName: RequiredDocsItem, Assembly-CSharp
         m_MethodName: SelectInputField
         m_Mode: 1
@@ -15523,7 +15523,7 @@ MonoBehaviour:
   m_OnSelect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7267580531387548157}
+      - m_Target: {fileID: 1578726229}
         m_TargetAssemblyTypeName: RequiredDocsItem, Assembly-CSharp
         m_MethodName: SelectInputField
         m_Mode: 1
@@ -16363,7 +16363,7 @@ MonoBehaviour:
   m_OnSelect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7267580531387548157}
+      - m_Target: {fileID: 1496665067}
         m_TargetAssemblyTypeName: RequiredDocsItem, Assembly-CSharp
         m_MethodName: SelectInputField
         m_Mode: 1
@@ -16933,7 +16933,7 @@ MonoBehaviour:
   m_OnSelect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7267580531387548157}
+      - m_Target: {fileID: 81485565}
         m_TargetAssemblyTypeName: RequiredDocsItem, Assembly-CSharp
         m_MethodName: SelectInputField
         m_Mode: 1
@@ -30743,7 +30743,7 @@ MonoBehaviour:
   m_OnSelect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7267580531387548157}
+      - m_Target: {fileID: 8633670893617373837}
         m_TargetAssemblyTypeName: RequiredDocsItem, Assembly-CSharp
         m_MethodName: SelectInputField
         m_Mode: 1
@@ -44064,6 +44064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c8f48a5372c194da83fb6699648509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSaveComments: 0
   voiceTypingButton: {fileID: 3520034798894277855}
   closeButton: {fileID: 3520034798894273055}
   dictationHandler: {fileID: 1462635531}
@@ -60916,7 +60917,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3520034798894272663}
-  m_LocalRotation: {x: -0.86602545, y: 0, z: 0, w: 0.49999994}
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: -0.00483}
   m_LocalScale: {x: 0.0000150000005, y: 0.0000150000005, z: 0.0000150000005}
   m_ConstrainProportionsScale: 0
@@ -60929,7 +60930,7 @@ RectTransform:
   - {fileID: 3520034798880905931}
   - {fileID: 3300323485791935829}
   m_Father: {fileID: 2304523399631501151}
-  m_LocalEulerAnglesHint: {x: -120, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0.010239}
@@ -70969,30 +70970,6 @@ MonoBehaviour:
   <OnClicked>k__BackingField:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 220490891}
-        m_TargetAssemblyTypeName: SaveCommentsManager, Assembly-CSharp
-        m_MethodName: SaveComments
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1390065441313532025}
-        m_TargetAssemblyTypeName: KeyboardManager, Assembly-CSharp
-        m_MethodName: UploadComments
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1390065441313532025}
         m_TargetAssemblyTypeName: KeyboardManager, Assembly-CSharp
         m_MethodName: closeKeyboard
@@ -96681,7 +96658,7 @@ MonoBehaviour:
   m_RichText: 1
   m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_OnFocusSelectAll: 0
-  m_ResetOnDeActivation: 0
+  m_ResetOnDeActivation: 1
   m_RestoreOriginalTextOnEscape: 1
   m_isRichTextEditingAllowed: 1
   m_LineLimit: 0

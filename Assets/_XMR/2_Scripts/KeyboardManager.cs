@@ -3,6 +3,7 @@ using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using TMPro;
 using UnityEngine.UI;
 using MixedReality.Toolkit.Examples.Demos;
+using System;
 #if WINDOWS_UWP
 using Windows.UI.Text.Core;
 #endif
@@ -21,6 +22,8 @@ public class KeyboardManager : MonoBehaviour
     public static bool isKeyboardOn;
     public static InputFieldType inputFieldType = InputFieldType.STANDARD;
 
+    public bool isSaveComments;
+
     [Space]
     public GameObject voiceTypingButton;
     public GameObject closeButton;
@@ -34,7 +37,7 @@ public class KeyboardManager : MonoBehaviour
     [SerializeField] Color voiceTypingOnColor;
     [SerializeField] Color voiceTypingOffColor;
 
-
+    
 
     private static TMP_InputField inputfield;
     private static string lastText;
@@ -48,6 +51,17 @@ public class KeyboardManager : MonoBehaviour
     {
         Instance = this;
     }
+
+    private void OnEnable()
+    {
+        NonNativeKeyboard.OnEnter += OnEnterPressed;
+    }
+
+    private void OnDisable()
+    {
+        NonNativeKeyboard.OnEnter -= OnEnterPressed;
+    }
+
     void Start()
     {
 #if WINDOWS_UWP
@@ -73,6 +87,13 @@ public class KeyboardManager : MonoBehaviour
 
     }
 
+    void OnEnterPressed()
+    {
+        if(isSaveComments)
+        {
+            SaveCommentsManager.Instance.SaveComments();
+        }
+    }
 
     /// <summary>
     /// present keyboard to user ,called when user "says take a note".
@@ -146,6 +167,7 @@ public class KeyboardManager : MonoBehaviour
             // close keyboard
             keyboard.Close();
             keyboard = null;
+            
         }
         else
         {
@@ -260,7 +282,10 @@ public class KeyboardManager : MonoBehaviour
         isKeyboardOn = true;
 
         DictationHandler.Instance.recognized = "";
+        
         keyboard = NonNativeKeyboard.Instance;
+        
+        
         keyboard.PresentKeyboard();
         keyboard.InputField.contentType = TMP_InputField.ContentType.Standard;
 
@@ -271,7 +296,9 @@ public class KeyboardManager : MonoBehaviour
 
         // set inputfield for keyboard
         inputfield = keyboard.InputField;
+        inputfield.text = "";
         inputfield.ActivateInputField();
+        keyboard.InputField.caretPosition = 0;
         voiceTyping = false;
 
         currentInputField = currentField;

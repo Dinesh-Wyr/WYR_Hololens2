@@ -100,7 +100,7 @@ public class SaveCommentsManager : MonoBehaviour
         }
 
         yield return StartCoroutine(SendImageURLToServer(S3UploadURL, GlobalData.poid, GlobalData.plid, commentsList));
-
+        userComments.text = string.Empty;
         Debug.Log("Comments Saved!!!");
     }
 

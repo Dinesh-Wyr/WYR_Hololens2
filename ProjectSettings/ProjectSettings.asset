@@ -891,6 +891,7 @@ PlayerSettings:
   platformCapabilities:
     WindowsStoreApps:
       GazeInput: True
+      Location: True
       InternetClientServer: True
       SpatialPerception: True
       InternetClient: True
