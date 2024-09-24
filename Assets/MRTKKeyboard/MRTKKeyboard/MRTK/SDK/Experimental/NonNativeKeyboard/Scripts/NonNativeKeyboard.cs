@@ -787,11 +787,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public void Enter()
         {
+            Debug.Log(SubmitOnEnter);
             if (SubmitOnEnter)
             {
+                Debug.Log("Enter save comments");
                 // Send text entered event and close the keyboard
                 OnTextSubmitted?.Invoke(this, EventArgs.Empty);
-
+                OnEnter?.Invoke();
                 //Close();
             }
             else

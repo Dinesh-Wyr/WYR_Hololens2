@@ -89,9 +89,16 @@ public class KeyboardManager : MonoBehaviour
 
     void OnEnterPressed()
     {
-        if(isSaveComments)
+        Debug.Log("OnEnterPressed");
+        Debug.Log(isSaveComments);
+        if (isSaveComments)
         {
+            
             SaveCommentsManager.Instance.SaveComments();
+        }
+        else
+        {
+            closeKeyboard();
         }
     }
 
@@ -116,14 +123,19 @@ public class KeyboardManager : MonoBehaviour
             closeKeyboard();
         }
 
+
+        ShowVoiceEnabledKeyboard();
+
+/*
         // means keyboard open for taking notes
         isKeyboardOn = true;
         Debug.Log("Comments " + isKeyboardOn);
+        DictationHandler.Instance.recognized = "";
 
         keyboard = NonNativeKeyboard.Instance;
         keyboard.PresentKeyboard();
         keyboard.InputField.contentType = TMP_InputField.ContentType.Standard;
-
+        //keyboard.InputField.DeactivateInputField();
         // show particular buttons for taking comments like voice typing button , save comments button.
         // function enables these buttons.        
         voiceTyping = true;
@@ -133,8 +145,10 @@ public class KeyboardManager : MonoBehaviour
 
         // set inputfield for keyboard
         inputfield = keyboard.InputField;
+        inputfield.text = "";
         inputfield.ActivateInputField();
-        voiceTyping = false;
+        keyboard.InputField.caretPosition = 0;
+        voiceTyping = false;*/
     }
 
     /// <summary>
@@ -277,7 +291,7 @@ public class KeyboardManager : MonoBehaviour
         }
     }
 
-    public void ShowVoiceEnabledKeyboard(TMP_InputField currentField)
+    public void ShowVoiceEnabledKeyboard(TMP_InputField currentField = null)
     {
         isKeyboardOn = true;
 

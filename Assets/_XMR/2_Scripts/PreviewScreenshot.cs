@@ -219,6 +219,7 @@ public class PreviewScreenshot : MonoBehaviour
 
     /// <summary>
     /// user does not want to add comments
+    /// 
     /// </summary>
     public void DontAddComments()
     {

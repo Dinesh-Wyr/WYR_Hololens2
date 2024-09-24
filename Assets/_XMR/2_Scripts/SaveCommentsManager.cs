@@ -62,7 +62,10 @@ public class SaveCommentsManager : MonoBehaviour
 
             Debug.Log("Saving comments.");
             PreviewScreenshot.Instance.DeleteScreenshot();
+            Debug.Log(userComments.text);
             StartCoroutine(SaveComments(userComments.text));
+
+            KeyboardManager.Instance.closeKeyboard();
         }
         catch (System.Exception ex)
         {
