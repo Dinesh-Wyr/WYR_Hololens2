@@ -58,6 +58,7 @@ public class APIEndpoints : MonoBehaviour
 
         GlobalData.ApiLink = baseURL;
         Debug.Log(GlobalData.ApiLink);
+        LoginMetaUI.Instance.Log(GlobalData.ApiLink);
 
 
 

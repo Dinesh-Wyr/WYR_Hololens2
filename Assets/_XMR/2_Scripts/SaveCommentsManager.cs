@@ -44,7 +44,9 @@ public class SaveCommentsManager : MonoBehaviour
         S3PostCommentsURL = GlobalData.ApiLink + APIEndpoints.Instance.S3PostCommentsEndPoint;
 
         Debug.Log(GetS3PresignUrl);
+        LoginMetaUI.Instance.Log(GetS3PresignUrl);
         Debug.Log(S3PostCommentsURL);
+        LoginMetaUI.Instance.Log(S3PostCommentsURL);
     }
 
     #region SaveComments
@@ -61,8 +63,10 @@ public class SaveCommentsManager : MonoBehaviour
                 return;
 
             Debug.Log("Saving comments.");
+            LoginMetaUI.Instance.Log("Saving comments.");
             PreviewScreenshot.Instance.DeleteScreenshot();
             Debug.Log(userComments.text);
+            LoginMetaUI.Instance.Log(userComments.text);
             StartCoroutine(SaveComments(userComments.text));
 
             KeyboardManager.Instance.closeKeyboard();
@@ -70,6 +74,7 @@ public class SaveCommentsManager : MonoBehaviour
         catch (System.Exception ex)
         {
             Debug.Log("Error saving comments: " + ex.Message);
+            LoginMetaUI.Instance.Log("Error saving comments: " + ex.Message, true);
         }
     }
 
@@ -81,30 +86,36 @@ public class SaveCommentsManager : MonoBehaviour
     public IEnumerator SaveComments(string Usercomments)
     {
         Debug.Log("Input field string " + Usercomments);
+        LoginMetaUI.Instance.Log("Input field string " + Usercomments);
 
         // parse user comments and search for "/n" which means next comment.
         string[] splitStr = Usercomments.Split('\n');
         List<string> commentsList = new(splitStr);
 
         Debug.Log("COMMENTS = " + commentsList);
+        LoginMetaUI.Instance.Log("COMMENTS = " + commentsList);
 
 
         string jsonData = JsonUtility.ToJson(new S3RequestData(GlobalData.poid, GlobalData.plid, "image/png", PreviewScreenshot.Instance.pngImageName));
 
         Debug.Log("presigned json : " + jsonData);
+        LoginMetaUI.Instance.Log("presigned json : " + jsonData);
 
+        LoginMetaUI.Instance.Loader(true);
         yield return StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.POST, GetS3PresignUrl, jsonData,callback: UploadImage));
 
         // send image url and comments to server
         if (S3UploadURL == null)
         {
             Debug.Log("Upload Failed");
+            LoginMetaUI.Instance.Log("Upload Failed",true);
             yield break;
         }
 
         yield return StartCoroutine(SendImageURLToServer(S3UploadURL, GlobalData.poid, GlobalData.plid, commentsList));
         userComments.text = string.Empty;
         Debug.Log("Comments Saved!!!");
+        LoginMetaUI.Instance.Log("Comments Saved!!!");
     }
 
     #endregion
@@ -116,6 +127,7 @@ public class SaveCommentsManager : MonoBehaviour
         GetS3URLResponse response = JsonUtility.FromJson<GetS3URLResponse>(responseText);
         S3UploadURL = response.url;
         Debug.Log("GOT PRESIGN URL = " + S3UploadURL);
+        LoginMetaUI.Instance.Log("GOT PRESIGN URL = " + S3UploadURL);
 
         // Get IMAGE FROM LOCATION
         //string filePath = ScreenshotManager.Instance.FilePath;
@@ -124,9 +136,15 @@ public class SaveCommentsManager : MonoBehaviour
         //Debug.Log("File Read");
 
         // UPLOAD TO S3
-        StartCoroutine(ApiCallUtility.Instance.SendImage(Method.PUT, S3UploadURL, PreviewScreenshot.Instance.pngTextureBytes));
+        LoginMetaUI.Instance.Loader(true);
+        StartCoroutine(ApiCallUtility.Instance.SendImage(Method.PUT, S3UploadURL, PreviewScreenshot.Instance.pngTextureBytes, Callback));
     }
 
+    
+    void Callback(string response)
+    {
+        LoginMetaUI.Instance.Loader(false);
+    }
 
     // post request to send data.
     private IEnumerator SendImageURLToServer(string imageURL, string poid, string plid, List<string> commentsList)
@@ -134,17 +152,21 @@ public class SaveCommentsManager : MonoBehaviour
         if (imageURL == null)
         {
             Debug.Log("Take a ScreenShot First");
+            LoginMetaUI.Instance.Log("Take a ScreenShot First",true);
         }
 
         
         string jsonData = JsonUtility.ToJson(new SendCommentsWithDefectType(imageURL, poid, plid, commentsList, PreviewScreenshot.defectCategory));
 
         Debug.Log("Sending image URL to server: " + imageURL);
+        LoginMetaUI.Instance.Log("Sending image URL to server: " + imageURL);
         Debug.Log("Payload: " + jsonData);
+        LoginMetaUI.Instance.Log("Payload: " + jsonData);
 
         // Send image URL to server
 
-        yield return StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.POST, S3PostCommentsURL, jsonData));
+        LoginMetaUI.Instance.Loader(true);
+        yield return StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.POST, S3PostCommentsURL, jsonData,callback: Callback));
 
     }
 

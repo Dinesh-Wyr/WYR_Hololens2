@@ -30,7 +30,7 @@ public class KeyboardManager : MonoBehaviour
 
     [Space]
 
-    [SerializeField] DictationHandler dictationHandler;
+    //[SerializeField] DictationHandler dictationHandler;
     [SerializeField] private Image voiceTypingImage;
     [SerializeField] private Sprite voiceTypingOn;
     [SerializeField] private Sprite voiceTypingOff;
@@ -70,10 +70,10 @@ public class KeyboardManager : MonoBehaviour
         _editContext.InputPaneDisplayPolicy = CoreTextInputPaneDisplayPolicy.Manual;
 #endif
         SwitchVoiceTyping();
-        onListening();
 
         isKeyboardOn = false;
         Debug.Log("Closed " + isKeyboardOn);
+        LoginMetaUI.Instance.Log("Closed " + isKeyboardOn);
     }
 
     // Update is called once per frame
@@ -90,7 +90,9 @@ public class KeyboardManager : MonoBehaviour
     void OnEnterPressed()
     {
         Debug.Log("OnEnterPressed");
+        LoginMetaUI.Instance.Log("OnEnterPressed");
         Debug.Log(isSaveComments);
+        LoginMetaUI.Instance.Log(isSaveComments.ToString());
         if (isSaveComments)
         {
             
@@ -108,13 +110,16 @@ public class KeyboardManager : MonoBehaviour
     public void OpenCommentsKeyboard()
     {
         Debug.Log("Opening Keyboard for taking notes....");
+        LoginMetaUI.Instance.Log("Opening Keyboard for taking notes....");
         if (!GlobalData.ScreenshotTaken)
         {
             Debug.Log("Take Screenshot First");
+            LoginMetaUI.Instance.Log("Take Screenshot First");
         }
         else if (!GlobalData.ScreenshotPreviewShown)
         {
             Debug.Log("Wait for Screenshot preview");
+            LoginMetaUI.Instance.Log("Wait for Screenshot preview");
         }
 
         // if keyboard already opened
@@ -124,7 +129,28 @@ public class KeyboardManager : MonoBehaviour
         }
 
 
-        ShowVoiceEnabledKeyboard();
+        isKeyboardOn = true;
+
+        DictationHandler.recognized = string.Empty;
+
+        keyboard = NonNativeKeyboard.Instance;
+
+        keyboard.PresentKeyboard();
+        keyboard.InputField.contentType = TMP_InputField.ContentType.Standard;
+
+        voiceTyping = true;
+        SwitchVoiceTyping();
+        voiceTypingButton.SetActive(true);
+        closeButton.SetActive(false);
+
+        // set inputfield for keyboard
+        inputfield = keyboard.InputField;
+        inputfield.text = "";
+        inputfield.ActivateInputField();
+        keyboard.InputField.caretPosition = 0;
+        voiceTyping = false;
+
+        //ShowVoiceEnabledKeyboard();
 
 /*
         // means keyboard open for taking notes
@@ -157,8 +183,10 @@ public class KeyboardManager : MonoBehaviour
     public void closeKeyboard()
     {
         Debug.Log("Closing keyboard....");
+        LoginMetaUI.Instance.Log("Closing keyboard....");
         isKeyboardOn = false;
         Debug.Log("Closed Button" + isKeyboardOn);
+        LoginMetaUI.Instance.Log("Closed Button" + isKeyboardOn);
         if (keyboard == null && LoginMetaUI.keyboard == null)
         {
             return;
@@ -178,10 +206,11 @@ public class KeyboardManager : MonoBehaviour
             isKeyboardOn = false;
 
             Debug.Log("closing keyboard");
+            LoginMetaUI.Instance.Log("closing keyboard");
             // close keyboard
             keyboard.Close();
             keyboard = null;
-            
+            currentInputField = null;
         }
         else
         {
@@ -194,6 +223,15 @@ public class KeyboardManager : MonoBehaviour
        
     }
 
+    public void ChangeVoiceTyping(bool status)
+    {
+        voiceTyping = status;
+    }
+
+    public bool GetVoiceTyping()
+    {
+        return voiceTyping;
+    }
 
     /// <summary>
     /// Switch voice typing.
@@ -201,61 +239,34 @@ public class KeyboardManager : MonoBehaviour
     public void SwitchVoiceTyping()
     {
         voiceTyping = !voiceTyping;
+        
 
         if (voiceTyping)
+            DictationHandler.Instance.StartRecognition();
+        else
+            DictationHandler.Instance.StopRecognition();
+
+        SwitchButtonImage(voiceTyping);
+    }
+
+    public void SwitchButtonImage(bool status)
+    {
+        LoginMetaUI.Instance.Log("SwitchButtonImage");
+        if (status)
         {
             voiceTypingImage.sprite = voiceTypingOn;
             voiceTypingImage.color = voiceTypingOnColor;
-            dictationHandler.StartRecognition();
-            dictationHandler.recognized = "";
             Debug.Log("Voice Typing Enabled");
+            LoginMetaUI.Instance.Log("Voice Typing Enabled");
         }
         else
         {
             voiceTypingImage.sprite = voiceTypingOff;
             voiceTypingImage.color = voiceTypingOffColor;
-            dictationHandler.StopRecognition();
             Debug.Log("Voice Typing Disabled");
+            LoginMetaUI.Instance.Log("Voice Typing Disabled");
         }
-
-    }
-
-
-    /// <summary>
-    /// Add voice typing utterance to user comments and log user utterances
-    /// </summary>
-    public void onListening()
-    {
-        /*
-        AppDictationExperience.TranscriptionEvents.OnFullTranscription.AddListener((transcription) =>
-        {
-            // check if voice typing is enabled , keyboard is not null and last word != user utterance to prevent multiple duplicate words being added.
-            if (voiceTyping == true && inputfield != null && lastText != transcription)
-            {
-                if (transcription.ToLower() != "save comments")
-                {
-                    inputfield.text += " " + transcription;
-                    inputfield.caretPosition = inputfield.text.Length;
-                }
-
-                Debug.Log("INPUT FIELD = " + inputfield.text);
-                lastText = transcription;
-            }
-
-
-            // log user utteracnces
-            if (transcription.Length > 0 && lastUtterance != transcription)
-            {
-                Debug.Log("Logging Utterance");
-                Debug.Log("USER UTTERANCE : " + transcription);
-                lastUtterance = transcription;
-            }
-        });
-
-        // prevent overflow of comment
-        if (inputfield != null && inputfield.text.Length > 10000)
-            inputfield.text = "";
-        */
+        DictationHandler.recognized = string.Empty;
     }
 
     /// <summary>
@@ -277,25 +288,30 @@ public class KeyboardManager : MonoBehaviour
     {
 
         Debug.Log("ClearText");
+        LoginMetaUI.Instance.Log("ClearText");
         // check if keyboard for typing comments is opne
         if(keyboard != null)
         {
             Debug.Log(keyboard.InputField.name);
+            LoginMetaUI.Instance.Log(keyboard.InputField.name);
             keyboard.InputField.text = "";
         }
         // check if any other keyboard is open
         else if(LoginMetaUI.keyboard != null)
         {
             Debug.Log(LoginMetaUI.keyboard.InputField.name);
+            LoginMetaUI.Instance.Log(LoginMetaUI.keyboard.InputField.name);
             LoginMetaUI.keyboard.InputField.text = "";
         }
+
+        DictationHandler.recognized = string.Empty;
     }
 
     public void ShowVoiceEnabledKeyboard(TMP_InputField currentField = null)
     {
         isKeyboardOn = true;
 
-        DictationHandler.Instance.recognized = "";
+        DictationHandler.recognized = string.Empty;
         
         keyboard = NonNativeKeyboard.Instance;
         
@@ -315,9 +331,8 @@ public class KeyboardManager : MonoBehaviour
         keyboard.InputField.caretPosition = 0;
         voiceTyping = false;
 
+        //if (!isSaveComments)
         currentInputField = currentField;
-
-       
     }
 
 

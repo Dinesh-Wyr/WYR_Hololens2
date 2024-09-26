@@ -125,6 +125,7 @@ public class RequiredDocsManager : MonoBehaviour
         Debug.Log(storeUrl);
         Debug.Log(updateUrl);
 
+        LoginMetaUI.Instance.Loader(true);
         StartCoroutine(ApiCallUtility.Instance.DelayedCall(1, GetData));
 
         //GetData();
@@ -139,6 +140,7 @@ public class RequiredDocsManager : MonoBehaviour
         //Debug.Log("plid : " + GlobalData.plid + " , poid : " + GlobalData.poid);
         string json = "{\"poid\":\""+GlobalData.poid+"\",\"plid\":\""+GlobalData.plid+"\"}";
         Debug.Log(json);
+        LoginMetaUI.Instance.Loader(true);
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.GET, getUrl, json, callback: loadData));
     }
 
@@ -165,7 +167,8 @@ public class RequiredDocsManager : MonoBehaviour
         isVisited = docResponse.isVisited;
         isSkipped = docResponse.skip;
         GlobalData.RequiredDocsId = docResponse._id;
-        
+
+        LoginMetaUI.Instance.Loader(false);
     }
 
     public void NextPage()
@@ -216,6 +219,7 @@ public class RequiredDocsManager : MonoBehaviour
         doc.isVisited = isVisited;
         doc.skip = skip;
 
+        LoginMetaUI.Instance.Loader(true);
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.POST, storeUrl, JsonUtility.ToJson(doc), callback: recordResponse));
     }
 
@@ -235,6 +239,7 @@ public class RequiredDocsManager : MonoBehaviour
         doc.isVisited = isVisited;
         doc.skip = false;
         doc._id = docResponse._id;
+        LoginMetaUI.Instance.Loader(true);
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.PUT, updateUrl, JsonUtility.ToJson(doc), callback: recordResponse));
     }
 
@@ -253,6 +258,7 @@ public class RequiredDocsManager : MonoBehaviour
             Debug.LogError("doc not parsed");
         }
 
+        LoginMetaUI.Instance.Loader(false);
         UIEventSystem.TabGroupChange(TabGroups.InspectionCriteria);
     }
    

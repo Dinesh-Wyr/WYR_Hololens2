@@ -45,6 +45,7 @@ public class LoginManager : MonoBehaviour
     {
         uri = GlobalData.ApiLink + APIEndpoints.Instance.loginEndPoint;
         Debug.Log(uri);
+        LoginMetaUI.Instance.Log(uri);
         
     }
 
@@ -57,7 +58,9 @@ public class LoginManager : MonoBehaviour
     {
 
         Debug.Log("TRYING TO Login");
+        LoginMetaUI.Instance.Log("TRYING TO Login");
         Debug.Log("Url = " + uri);
+        LoginMetaUI.Instance.Log("Url = " + uri);
         WWWForm form = new();
         string email = emailPhone.text.ToString();
         string password = this.password.text.ToString();
@@ -74,9 +77,11 @@ public class LoginManager : MonoBehaviour
         if (www.result != UnityWebRequest.Result.Success)
         {
             Debug.LogError(www.error);
+            LoginMetaUI.Instance.Log(www.error,true);
             loginButton.SetActive(true);
             loader.SetActive(false);
             Debug.Log("ERROR Logging In");
+            LoginMetaUI.Instance.Log("ERROR Logging In",true);
             this.password.text = "";
         }
         else
@@ -84,11 +89,14 @@ public class LoginManager : MonoBehaviour
             
 
             Debug.Log(www.downloadHandler.text);
+            LoginMetaUI.Instance.Log(www.downloadHandler.text);
             LoginData data = JsonUtility.FromJson(www.downloadHandler.text, typeof(LoginData)) as LoginData;
             GlobalData.Token = data.token;
             Debug.Log(GlobalData.Token);
+            LoginMetaUI.Instance.Log(GlobalData.Token);
             GlobalData.IsLoggedIn = true;
             Debug.Log("SUCCESS Logging In");
+            LoginMetaUI.Instance.Log("SUCCESS Logging In");
            
             OnLoginSuccess();
 
@@ -99,7 +107,7 @@ public class LoginManager : MonoBehaviour
     void OnLoginSuccess()
     {
         UIEventSystem.Login();
-        UIEventSystem.TabGroupChange(TabGroups.Livestream);
+        UIEventSystem.TabGroupChange(TabGroups.Dashboard);
         password.text = "";
     }
 

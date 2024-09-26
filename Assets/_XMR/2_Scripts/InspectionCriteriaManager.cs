@@ -106,6 +106,7 @@ public class InspectionCriteriaManager : MonoBehaviour
         Debug.Log(storeUrl);
         Debug.Log(updateUrl);
 
+        LoginMetaUI.Instance.Loader(true);
         StartCoroutine(ApiCallUtility.Instance.DelayedCall(1, GetData));
 
     }
@@ -118,6 +119,7 @@ public class InspectionCriteriaManager : MonoBehaviour
         //Debug.Log("plid : " + GlobalData.plid + " , poid : " + GlobalData.poid);
         string json = "{\"poid\":\"" + GlobalData.poid + "\",\"plid\":\"" + GlobalData.plid + "\"}";
         Debug.Log(json);
+        LoginMetaUI.Instance.Loader(true);
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.GET, getUrl, json,callback: loadData));
     }
 
@@ -143,6 +145,7 @@ public class InspectionCriteriaManager : MonoBehaviour
         second.isOn = inspectionCriteriaResponse.inspectionLevel.second;
         third.isOn = inspectionCriteriaResponse.inspectionLevel.third;
 
+        LoginMetaUI.Instance.Loader(false);
     }
 
     public void NextPage()
@@ -173,6 +176,7 @@ public class InspectionCriteriaManager : MonoBehaviour
         inspectionCriteria.inspectionLevel.second = second.isOn;
         inspectionCriteria.inspectionLevel.third = third.isOn;
 
+        LoginMetaUI.Instance.Loader(true);
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.POST, storeUrl, JsonUtility.ToJson(inspectionCriteria),callback: recordResponse));
 
     }
@@ -188,7 +192,7 @@ public class InspectionCriteriaManager : MonoBehaviour
         inspectionCriteriaParameter.inspectionLevel.first= first.isOn;
         inspectionCriteriaParameter.inspectionLevel.second= second.isOn;
         inspectionCriteriaParameter.inspectionLevel.third= third.isOn;
-
+        LoginMetaUI.Instance.Loader(true);
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.PUT, updateUrl, JsonUtility.ToJson(inspectionCriteriaParameter), callback: recordResponse));
     }
 
@@ -207,6 +211,7 @@ public class InspectionCriteriaManager : MonoBehaviour
             Debug.LogError("doc not parsed");
         }
 
+        LoginMetaUI.Instance.Loader(false);
         UIEventSystem.TabGroupChange(TabGroups.InspectionCriteria);
     }
 

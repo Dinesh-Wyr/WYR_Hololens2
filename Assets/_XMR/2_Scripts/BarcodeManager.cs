@@ -84,6 +84,7 @@ public class BarcodeManager : MonoBehaviour
         url = GlobalData.ApiLink + APIEndpoints.Instance.barcodeScannerEndPoint;
 
         Debug.Log(url);
+        LoginMetaUI.Instance.Log(url);
     }
 
 /*
@@ -132,7 +133,7 @@ public class BarcodeManager : MonoBehaviour
         form.AddField("poid", GlobalData.poid);
 
         //BarcodePreviewUI.SetActive(false);
-
+        LoginMetaUI.Instance.Loader(true);
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.POST, url, form: form, callback: GetBarcodeResponse));
     }
 /*
@@ -173,7 +174,9 @@ public class BarcodeManager : MonoBehaviour
     void GetBarcodeResponse(string response)
     {
         Debug.Log("barcode response : "+response);
+        LoginMetaUI.Instance.Log("barcode response : "+response);
         Debug.Log(response);
+        LoginMetaUI.Instance.Log(response);
         BarcodeResponse = JsonUtility.FromJson<BarcodeResponse>(response);
         BarcodeResultUI.SetActive(true);
 
@@ -186,7 +189,10 @@ public class BarcodeManager : MonoBehaviour
         {
             //MRTKScreenshotManager.Instance.SetText("barcode - could not parse response");
             Debug.Log("barcode - could not parse response");
+            LoginMetaUI.Instance.Log("barcode - could not parse response");
         }
+
+        LoginMetaUI.Instance.Loader(false);
     }
 
     
@@ -204,17 +210,23 @@ public class BarcodeManager : MonoBehaviour
         StartCoroutine(PopulatePOImage());
 
         Debug.Log("barcode - message" + BarcodeResponse.message);
+        LoginMetaUI.Instance.Log("barcode - message" + BarcodeResponse.message);
         matchStatus.text = BarcodeResponse.message;
     }
 
     IEnumerator PopulatePOImage()
     {
         Debug.Log("barcode - response po image url : " + BarcodeResponse.imageURL);
+        LoginMetaUI.Instance.Log("barcode - response po image url : " + BarcodeResponse.imageURL);
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(BarcodeResponse.imageURL);
         yield return request.SendWebRequest();
         if (request.result == UnityWebRequest.Result.ConnectionError ||
                 request.result == UnityWebRequest.Result.ProtocolError)
+        {
             Debug.Log(request.error);
+            LoginMetaUI.Instance.Log(request.error,true);
+
+        }
         else
         {
             Texture2D tex = new(2, 2, TextureFormat.RGBA32, false);

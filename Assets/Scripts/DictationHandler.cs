@@ -5,6 +5,7 @@
 #pragma warning disable CS1591
 
 using MixedReality.Toolkit.Subsystems;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -53,30 +54,37 @@ namespace MixedReality.Toolkit.Examples.Demos
         private IKeywordRecognitionSubsystem keywordRecognitionSubsystem = null;
 
 
-        [HideInInspector]
-        public string recognized = "";
+        //[SerializeField] TextMeshProUGUI debugText;
+
+        public static string recognized = "";
 
         private void Awake()
         {
             if(Instance == null)
                 Instance = this;
         }
-
         /// <summary>
         /// Start dictation on a DictationSubsystem.
         /// </summary>
         public void StartRecognition()
         {
+
+            LoginMetaUI.Instance.Log("StartRecognition");
             // Make sure there isn't an ongoing recognition session
             StopRecognition();
 
+
             dictationSubsystem = XRSubsystemHelpers.DictationSubsystem;
+
             if (dictationSubsystem != null)
             {
+
                 keywordRecognitionSubsystem = XRSubsystemHelpers.KeywordRecognitionSubsystem;
+
                 if (keywordRecognitionSubsystem != null)
                 {
                     keywordRecognitionSubsystem.Stop();
+                    LoginMetaUI.Instance.Log("keywordRecognitionSubsystem stop");
                 }
 
                 dictationSubsystem.Recognizing += DictationSubsystem_Recognizing;
@@ -84,6 +92,7 @@ namespace MixedReality.Toolkit.Examples.Demos
                 dictationSubsystem.RecognitionFinished += DictationSubsystem_RecognitionFinished;
                 dictationSubsystem.RecognitionFaulted += DictationSubsystem_RecognitionFaulted;
                 dictationSubsystem.StartDictation();
+                LoginMetaUI.Instance.Log("keywordRecognitionSubsystem");
             }
             else
             {
@@ -96,12 +105,15 @@ namespace MixedReality.Toolkit.Examples.Demos
         {
             OnRecognitionFaulted.Invoke(obj.ReasonString);
             HandleDictationShutdown();
+            LoginMetaUI.Instance.Log("DictationSubsystem_RecognitionFaulted");
         }
 
         private void DictationSubsystem_RecognitionFinished(DictationSessionEventArgs obj)
         {
             OnRecognitionFinished.Invoke(obj.ReasonString);
             HandleDictationShutdown();
+            LoginMetaUI.Instance.Log("DictationSubsystem_RecognitionFinished");
+
         }
 
         private void DictationSubsystem_Recognized(DictationResultEventArgs obj)
@@ -120,24 +132,31 @@ namespace MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void StopRecognition()
         {
+            LoginMetaUI.Instance.Log("StopRecognition");
             if (dictationSubsystem != null)
             {
                 dictationSubsystem.StopDictation();
-                recognized = "";
+                LoginMetaUI.Instance.Log("dictationSubsystem nStopRecognition");
+                recognized = string.Empty;
             }
         }
+        
 
         /// <summary>
         /// Stop dictation on the current DictationSubsystem.
         /// </summary>
         public void HandleDictationShutdown()
         {
+            LoginMetaUI.Instance.Log("HandleDictationShutdown");
+
+
             if (dictationSubsystem != null)
             {
                 dictationSubsystem.Recognizing -= DictationSubsystem_Recognizing;
                 dictationSubsystem.Recognized -= DictationSubsystem_Recognized;
                 dictationSubsystem.RecognitionFinished -= DictationSubsystem_RecognitionFinished;
                 dictationSubsystem.RecognitionFaulted -= DictationSubsystem_RecognitionFaulted;
+                LoginMetaUI.Instance.Log("HandleDictationShutdown dictationSubsystem not null");
                 dictationSubsystem = null;
             }
 
@@ -145,7 +164,10 @@ namespace MixedReality.Toolkit.Examples.Demos
             {
                 keywordRecognitionSubsystem.Start();
                 keywordRecognitionSubsystem = null;
+                LoginMetaUI.Instance.Log("keywordRecognitionSubsystem start");
             }
+
+            KeyboardManager.Instance.SwitchButtonImage(false);
         }
     }
 }

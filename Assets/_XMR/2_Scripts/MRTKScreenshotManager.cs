@@ -57,6 +57,7 @@ public class MRTKScreenshotManager : MonoBehaviour
     private int fps;
     private float deltaTime;
 
+/*
     void Update()
     {
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
@@ -65,6 +66,7 @@ public class MRTKScreenshotManager : MonoBehaviour
         // Display FPS in the console (optional)
         FPSText.text = fps.ToString();
     }
+*/
 
     public async void ShowCameraContainer()
     {
@@ -95,6 +97,7 @@ public class MRTKScreenshotManager : MonoBehaviour
     public IEnumerator TakeARScreenshot()
     {
         Debug.Log("TakeARScreenshot");
+        LoginMetaUI.Instance.Log("TakeARScreenshot");
         Resolution cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
 
         if (isCartons || isScreenshot)
@@ -116,6 +119,7 @@ public class MRTKScreenshotManager : MonoBehaviour
             photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate (PhotoCapture.PhotoCaptureResult result) {
                 // Take a picture
                 Debug.Log("StartPhotoModeAsync");
+                LoginMetaUI.Instance.Log("StartPhotoModeAsync");
                 photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
             });
         });
@@ -124,6 +128,7 @@ public class MRTKScreenshotManager : MonoBehaviour
     void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
     {
         Debug.Log("OnCapturedPhotoToMemory");
+        LoginMetaUI.Instance.Log("OnCapturedPhotoToMemory");
         // Copy the raw image data into the target texture
         photoCaptureFrame.UploadImageDataToTexture(screenshotTexture);
 
@@ -249,6 +254,7 @@ public class MRTKScreenshotManager : MonoBehaviour
         SetText("Screenshot");
         screenshotTexture = new Texture2D(webcamTexture.width, webcamTexture.height);
         Debug.Log(webcamTexture.isPlaying);
+        LoginMetaUI.Instance.Log(webcamTexture.isPlaying.ToString());
         // Copy the pixels from the WebCamTexture to the Texture2D
         if (webcamTexture.isPlaying)
         {

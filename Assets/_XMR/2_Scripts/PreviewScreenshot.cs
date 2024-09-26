@@ -46,6 +46,7 @@ public class PreviewScreenshot : MonoBehaviour
     private void LoadImage(string imagePath)
     {
         Debug.Log("LoadImage");
+        LoginMetaUI.Instance.Log("LoadImage");
 
         byte[] fileData = File.ReadAllBytes(imagePath);
         Texture2D tex = new(2, 2, TextureFormat.RGBA32, false);
@@ -65,6 +66,7 @@ public class PreviewScreenshot : MonoBehaviour
         else
         {
             Debug.Log("NULL REFERENCE of IMAGE COMPONENT");
+            LoginMetaUI.Instance.Log("NULL REFERENCE of IMAGE COMPONENT");
         }
     }
 
@@ -74,6 +76,7 @@ public class PreviewScreenshot : MonoBehaviour
     public void DisplayPreview(string path)
     {
         Debug.Log("DisplayPreview");
+        LoginMetaUI.Instance.Log("DisplayPreview");
 
         try
         {
@@ -85,6 +88,7 @@ public class PreviewScreenshot : MonoBehaviour
         }
         catch (System.Exception e) {
             Debug.Log(" error in Showing screenshot " + e);
+            LoginMetaUI.Instance.Log(" error in Showing screenshot " + e);
         }
        
     }
@@ -112,6 +116,7 @@ public class PreviewScreenshot : MonoBehaviour
         try
         {
             Debug.Log("Carton preview");
+            LoginMetaUI.Instance.Log("Carton preview");
             setToNone = false;
             ScreenshotPreviewObj.SetActive(true);
             DefectsSection.SetActive(false);
@@ -137,6 +142,7 @@ public class PreviewScreenshot : MonoBehaviour
             else
             {
                 Debug.Log("NULL REFERENCE of IMAGE COMPONENT");
+                LoginMetaUI.Instance.Log("NULL REFERENCE of IMAGE COMPONENT", true);
             }
 
             CartonSaveButton.OnClicked.RemoveAllListeners();
@@ -148,6 +154,7 @@ public class PreviewScreenshot : MonoBehaviour
         catch (System.Exception e)
         {
             Debug.Log("error in carton screenshot preview : " + e.Message);
+            LoginMetaUI.Instance.Log("error in carton screenshot preview : " + e.Message, true);
         }
     }
 
@@ -168,10 +175,12 @@ public class PreviewScreenshot : MonoBehaviour
             ScreenshotPreview.GetComponent<RawImage>().texture = null;
             ScreenshotPreviewObj.SetActive(false);
             Debug.Log("Deleting Screenshot");
+            LoginMetaUI.Instance.Log("Deleting Screenshot");
         }
         catch (System.Exception e) 
         {
             Debug.Log("error deleting screenshot " + e);
+            LoginMetaUI.Instance.Log("error deleting screenshot " + e, true);
         }
         
     }
@@ -188,10 +197,12 @@ public class PreviewScreenshot : MonoBehaviour
             KeyboardManager.Instance.isSaveComments = true;
             KeyboardManager.Instance.OpenCommentsKeyboard();
             Debug.Log(" Opening Keyboard...");
+            LoginMetaUI.Instance.Log(" Opening Keyboard...");
         }
         catch (System.Exception e)
         {
             Debug.Log("error saving screenshot" + e);
+            LoginMetaUI.Instance.Log("error saving screenshot" + e);
         }
     }
 
@@ -203,17 +214,20 @@ public class PreviewScreenshot : MonoBehaviour
         try
         {            
             Debug.Log("Displaying Confirmation....");
+            LoginMetaUI.Instance.Log("Displaying Confirmation....");
             ScreenshotPreview.GetComponent<RawImage>().texture = null;
             ScreenshotPreviewObj.SetActive(false);
             CommentsConfirmation.SetActive(true);
             //QuitApplication.instance.PositionObjectFrontOfCamera(CommentsConfirmation, 0.2f);
             Debug.Log("Showing comments confirmation");
+            LoginMetaUI.Instance.Log("Showing comments confirmation");
            
 
         }
         catch (System.Exception e)
         {
             Debug.Log(" error in Showing comments confirmation " + e);
+            LoginMetaUI.Instance.Log(" error in Showing comments confirmation " + e, true);
         }
     }
 
@@ -228,10 +242,12 @@ public class PreviewScreenshot : MonoBehaviour
             CommentsConfirmation.SetActive(false);
             StartCoroutine(SaveCommentsManager.Instance.SaveComments(""));
             Debug.Log("Uploaded Image without comments...");
+            LoginMetaUI.Instance.Log("Uploaded Image without comments...");
         }
         catch (System.Exception e) 
         {
             Debug.Log(" error uploading image without comments..." + e);
+            LoginMetaUI.Instance.Log(" error uploading image without comments..." + e, true);
         }
        
     }
@@ -281,6 +297,7 @@ public class PreviewScreenshot : MonoBehaviour
         NoneCategory.isOn = true;
         defectCategory = "None";
         Debug.Log("Resetting to None");
+        LoginMetaUI.Instance.Log("Resetting to None");
     }
 
 }

@@ -1,3 +1,4 @@
+using MixedReality.Toolkit.Examples.Demos;
 using System;
 using System.Collections;
 using System.Text;
@@ -68,17 +69,23 @@ public class ApiCallUtility : MonoBehaviour
 
         yield return www.SendWebRequest();
         Debug.Log(www.result);
+        LoginMetaUI.Instance.Log(www.result.ToString());
         if (www.result != UnityWebRequest.Result.Success)
         {
             Debug.LogError(www.error);
             Debug.LogError(www.downloadHandler.text);
+
+            LoginMetaUI.Instance.Log(www.error, true);
+            LoginMetaUI.Instance.Log(www.downloadHandler.text, true);
         }
         else
         {
             Debug.Log(www.downloadHandler.text);
+            LoginMetaUI.Instance.Log(www.downloadHandler.text);
             if (callback != null && !string.IsNullOrEmpty(www.downloadHandler.text))
             {
                 Debug.Log("post callback");
+                LoginMetaUI.Instance.Log("post callback");
                 callback?.Invoke(www.downloadHandler.text);
             }
         }
@@ -97,6 +104,7 @@ public class ApiCallUtility : MonoBehaviour
             request.SetRequestHeader("Content-Type", "image/png");
 
             Debug.Log(method.ToString());
+            LoginMetaUI.Instance.Log(method.ToString());
 
             //if (method == Method.POST)
                 //request.SetRequestHeader("Authorization", "Bearer " + GlobalData.Token);
@@ -104,19 +112,23 @@ public class ApiCallUtility : MonoBehaviour
             yield return request.SendWebRequest();
 
             Debug.Log("done");
+            LoginMetaUI.Instance.Log("done");
 
             if (request.result == UnityWebRequest.Result.ConnectionError ||
                 request.result == UnityWebRequest.Result.ProtocolError)
             {
                 MRTKScreenshotManager.Instance.SetText("Error Posting image: " + request.error);
                 Debug.Log("Error Posting image: " + request.error);
+                LoginMetaUI.Instance.Log("Error Posting image: " + request.error,true);
                 yield break;
             }
             else
             {
                 MRTKScreenshotManager.Instance.SetText("FILE UPLOADED");
                 Debug.Log("FILE UPLOADED");
+                LoginMetaUI.Instance.Log("FILE UPLOADED");
                 Debug.Log("Server response: " + request.downloadHandler.text);
+                LoginMetaUI.Instance.Log("Server response: " + request.downloadHandler.text);
                 if (callback != null)
                 {
                     callback(request.downloadHandler.text);

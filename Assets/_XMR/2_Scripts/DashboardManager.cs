@@ -26,7 +26,9 @@ public class DashboardManager : MonoBehaviour
         uri = GlobalData.ApiLink + APIEndpoints.Instance.dashboardEndPoint;
 
         Debug.Log(uri);
+        LoginMetaUI.Instance.Log(uri);
 
+        LoginMetaUI.Instance.Loader(true);
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.GET, uri,callback: LoadData));
     }
 
@@ -55,7 +57,9 @@ public class DashboardManager : MonoBehaviour
             GameObject obj = Instantiate(dashboardItem, listParent);
             obj.GetComponent<DashboardItem>().PopulateDashboardItemInfo(dataItem);
         }
-        
+
+        LoginMetaUI.Instance.Loader(false);
+
     }
 
 }

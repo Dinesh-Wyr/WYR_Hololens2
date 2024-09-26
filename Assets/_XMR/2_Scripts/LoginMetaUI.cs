@@ -19,7 +19,16 @@ public class LoginMetaUI : MonoBehaviour
     public static PO_Item po_instance;
     public static TMP_InputField selected_field;
     public static LoginMetaUI Instance;
-    
+
+    [SerializeField] GameObject UILoader;
+
+
+    [SerializeField]
+    TextMeshProUGUI debugLogText;
+    [SerializeField]
+    GameObject debugLog;
+    [SerializeField]
+    Transform debugContent;
 
 
     private void Awake()
@@ -158,6 +167,7 @@ public class LoginMetaUI : MonoBehaviour
 
         string jsonData = "{ \"poid\":\"" + GlobalData.poid + "\" , \"plid\":\"" + GlobalData.plid + "\" }";
         string url = GlobalData.ApiLink + APIEndpoints.Instance.EndInspectionEndPoint;
+        LoginMetaUI.Instance.Loader(true);
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.POST, url, jsonData, callback: EndInspectionResponse));
         GlobalData.poid = null;
         GlobalData.plid = null;
@@ -171,8 +181,32 @@ public class LoginMetaUI : MonoBehaviour
 
     }
 
+
+    public void Loader(bool status)
+    {
+        if (status)
+            UILoader.SetActive(true);
+        else
+            UILoader.SetActive(false);
+    }
+
+    public void Log(string debug, bool isError = false)
+    {
+        GameObject prefab = Instantiate(debugLog, debugContent);
+
+        TextMeshProUGUI textProUGUI = prefab.GetComponent<TextMeshProUGUI>();
+
+        if (!isError)
+            textProUGUI.text += debug;
+        else
+            textProUGUI.text += "<color=red>" + debug + "</color>";
+    }
+
+
     void EndInspectionResponse(string json)
-    {/*
+    {
+        LoginMetaUI.Instance.Loader(false);
+        /*
         UserMappingResponse response = JsonUtility.FromJson<UserMappingResponse>(json);
         if (response != null)
         {
