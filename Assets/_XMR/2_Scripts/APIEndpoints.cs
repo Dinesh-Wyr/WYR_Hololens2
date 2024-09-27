@@ -20,7 +20,8 @@ public class APIEndpoints : MonoBehaviour
     SelectBaseURL selectedBaseURL;
 
     [HideInInspector]
-    public string loginEndPoint, dashboardEndPoint, GetS3EndPoint, S3PostCommentsEndPoint, getDocsEndPoint, addDocsEndPoint, updateDocsEndPoint, getCriteriaEndPoint, addCriteriaEndPoint, updateCriteriaEndPoint, barcodeScannerEndPoint;
+    public string loginEndPoint, dashboardEndPoint, GetS3EndPoint, S3PostCommentsEndPoint, getDocsEndPoint, addDocsEndPoint, updateDocsEndPoint, 
+        getCriteriaEndPoint, addCriteriaEndPoint, updateCriteriaEndPoint, barcodeScannerEndPoint, uploadImageEndPoint, colorMatchEndPoint;
 
     // API endpoints
     [HideInInspector]
@@ -71,7 +72,11 @@ public class APIEndpoints : MonoBehaviour
         getCriteriaEndPoint = apiEndpointsObject.getCriteriaEndPoint;
         addCriteriaEndPoint = apiEndpointsObject.addCriteriaEndPoint;
         updateCriteriaEndPoint = apiEndpointsObject.updateCriteriaEndPoint;
+
         barcodeScannerEndPoint = apiEndpointsObject.barcodeScannerEndPoint;
+
+        uploadImageEndPoint = apiEndpointsObject.uploadImageEndPoint;
+        colorMatchEndPoint = apiEndpointsObject.colorMatchEndPoint;
 
 
         GetCartonCountURL = apiEndpointsObject.GetCartonCountURL;

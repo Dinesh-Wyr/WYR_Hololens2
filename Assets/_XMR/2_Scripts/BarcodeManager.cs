@@ -135,41 +135,7 @@ public class BarcodeManager : MonoBehaviour
 
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.POST, url, form: form, callback: GetBarcodeResponse));
     }
-/*
-    string tempPO = "66deddd951c3ea7223a9b634";
-    string tempPL = "66deee8551c3ea7223a9b8b6";
 
-    public void SetTempPOPL(int index)
-    {
-        switch(index)
-        {
-            case 1:
-                tempPO = "66deddd951c3ea7223a9b634";
-                tempPL = "66deee8551c3ea7223a9b8b6";
-                break;
-            case 2:
-                tempPO = "66dfda7d51c3ea7223a9bae3";
-                tempPL = "66dfdb3351c3ea7223a9bcbf";
-                break;
-            case 3:
-                tempPO = "66dfdcef51c3ea7223a9bdbc";
-                tempPL = "66dfdd2551c3ea7223a9bfd2";
-                break;
-            case 4:
-                tempPO = "66dfdf2451c3ea7223a9c063";
-                tempPL = "66dfdf6951c3ea7223a9c396";
-                break;
-            case 5:
-                tempPO = "66dfe1b651c3ea7223a9c430";
-                tempPL = "66dfe20651c3ea7223a9c6f6";
-                break;
-
-        }
-
-        Debug.Log(tempPO);
-        Debug.Log(tempPL);
-    }
-*/
     void GetBarcodeResponse(string response)
     {
         Debug.Log("barcode response : "+response);
@@ -230,4 +196,40 @@ public class BarcodeManager : MonoBehaviour
             StartCoroutine(SaveCommentsManager.Instance.SaveComments(matchStatus.text));
         });
     }
+
+    /*
+    string tempPO = "66deddd951c3ea7223a9b634";
+    string tempPL = "66deee8551c3ea7223a9b8b6";
+
+    public void SetTempPOPL(int index)
+    {
+        switch(index)
+        {
+            case 1:
+                tempPO = "66deddd951c3ea7223a9b634";
+                tempPL = "66deee8551c3ea7223a9b8b6";
+                break;
+            case 2:
+                tempPO = "66dfda7d51c3ea7223a9bae3";
+                tempPL = "66dfdb3351c3ea7223a9bcbf";
+                break;
+            case 3:
+                tempPO = "66dfdcef51c3ea7223a9bdbc";
+                tempPL = "66dfdd2551c3ea7223a9bfd2";
+                break;
+            case 4:
+                tempPO = "66dfdf2451c3ea7223a9c063";
+                tempPL = "66dfdf6951c3ea7223a9c396";
+                break;
+            case 5:
+                tempPO = "66dfe1b651c3ea7223a9c430";
+                tempPL = "66dfe20651c3ea7223a9c6f6";
+                break;
+
+        }
+
+        Debug.Log(tempPO);
+        Debug.Log(tempPL);
+    }
+*/
 }

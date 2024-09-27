@@ -99,7 +99,7 @@ public class LoginManager : MonoBehaviour
     void OnLoginSuccess()
     {
         UIEventSystem.Login();
-        UIEventSystem.TabGroupChange(TabGroups.Livestream);
+        UIEventSystem.TabGroupChange(TabGroups.Dashboard);
         password.text = "";
     }
 

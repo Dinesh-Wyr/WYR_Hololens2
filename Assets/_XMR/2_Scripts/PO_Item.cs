@@ -64,6 +64,7 @@ public class PO_Item : MonoBehaviour
         RescheduleBtn.SetActive(false);
         StartInspectionBtn.SetActive(false);
         LoginMetaUI.Instance.barcodeCameraButton.SetActive(true);
+        LoginMetaUI.Instance.colorMatchButton.SetActive(true);
     }
 
   

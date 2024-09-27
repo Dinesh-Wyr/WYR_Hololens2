@@ -14,6 +14,7 @@ public class LoginMetaUI : MonoBehaviour
     [SerializeField] private GameObject kb;
     [SerializeField] GameObject EndInspectionConfirmObj;
     public GameObject barcodeCameraButton;
+    public GameObject colorMatchButton;
 
     public static NonNativeKeyboard keyboard;
     public static PO_Item po_instance;
@@ -166,6 +167,7 @@ public class LoginMetaUI : MonoBehaviour
         UIEventSystem.EndInspection();
         //LivestreamUIManager.Instance.StopStreaming();
         barcodeCameraButton.SetActive(false);
+        colorMatchButton.SetActive(false);
         //CommunicationUIManager.Instance.LeaveChannel();
         UIEventSystem.TabGroupChange(TabGroups.Dashboard);
 

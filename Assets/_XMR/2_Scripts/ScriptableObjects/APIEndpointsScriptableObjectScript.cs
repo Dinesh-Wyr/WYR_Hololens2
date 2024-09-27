@@ -27,7 +27,13 @@ public class APIEndpointsScriptableObjectScript : ScriptableObject
     public string getCriteriaEndPoint = "inspection_criteria/criteriaGet";
     public string addCriteriaEndPoint = "inspection_criteria/criteriaAdd";
     public string updateCriteriaEndPoint = "inspection_criteria/criteriaUpdate";
+
+    [Space(10)]
     public string barcodeScannerEndPoint = "barcode/barcodeScanner";
+
+    [Space(10)]
+    public string uploadImageEndPoint = "colorMatch/colorMatchImageUpload";
+    public string colorMatchEndPoint = "colorMatch/colorMatching";
 
 
     [Space(10)]

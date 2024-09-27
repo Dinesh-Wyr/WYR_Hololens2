@@ -15,6 +15,12 @@ using UnityEngine.Windows.WebCam;
 using Windows.Storage;
 #endif
 
+[Serializable]
+public enum WidgetType
+{
+    Barcode,
+    ColorMatch
+}
 
 public class MRTKScreenshotManager : MonoBehaviour
 {
@@ -26,9 +32,14 @@ public class MRTKScreenshotManager : MonoBehaviour
     [Header("Barcode")]
     [SerializeField] GameObject cameraContainer;
     [SerializeField] GameObject barcodeValidateButtons;
+    [SerializeField] GameObject colorMatchValidateButtons;
+    [SerializeField] GameObject loader;
     [SerializeField] RawImage cameraLiveFeedImage;
     //[SerializeField] TextMeshProUGUI statusText;
     [SerializeField] TextMeshProUGUI FPSText;
+
+    GameObject guideFrame;
+    GameObject addButton, validateButton;
 
     bool isCameraOn;
     WebCamTexture webcamTexture;
@@ -39,6 +50,8 @@ public class MRTKScreenshotManager : MonoBehaviour
     int camHeight = 0;
     int camRequestFPS = 0;
 
+    WidgetType widgetType;
+
     private void Awake()
     {
         if (Instance == null)
@@ -47,6 +60,10 @@ public class MRTKScreenshotManager : MonoBehaviour
 
     private void Start()
     {
+
+        guideFrame = cameraLiveFeedImage.transform.GetChild(0).gameObject;
+        addButton = colorMatchValidateButtons.transform.GetChild(0).gameObject;
+        validateButton = colorMatchValidateButtons.transform.GetChild(1).gameObject;
         //Application.targetFrameRate = 60;
         //InitializeCamera();
 
@@ -64,26 +81,61 @@ public class MRTKScreenshotManager : MonoBehaviour
 
         // Display FPS in the console (optional)
         FPSText.text = fps.ToString();
+
+        if(Input.GetKeyUp(KeyCode.P))
+        {
+            CaptureProduct();
+        }
+
+        if(Input.GetKeyUp(KeyCode.M))
+        {
+
+        }
     }
 
-    public async void ShowCameraContainer()
+    public void Loader(bool status)
+    {
+        loader.SetActive(status);
+    }
+
+    //bool isLiveCameraOn;
+    /// <summary>
+    /// 0 = Barcode
+    /// 1 = Color Matching
+    /// </summary>
+    /// <param name="widget"></param>
+    public async void SwitchCameraContainer(int widget)
     {
         if (isScreenshot && isCartons)
             return;
+
+        switch(widget)
+        {
+            case 0:
+                widgetType = WidgetType.Barcode;
+                guideFrame.SetActive(true);
+                break;
+            case 1:
+                widgetType = WidgetType.ColorMatch;
+                guideFrame.SetActive(false);
+                break;
+        }
+
+        SwitchApprovedUpload(false);
 
         isCameraOn = !isCameraOn;
 
         if (isCameraOn)
         {
-            isBarcode = true;
+            //isLiveCameraOn = true;
             SetResolution(1920, 1080, 60);
-            cameraLiveFeedImage.transform.GetChild(0).gameObject.SetActive(true);
+            //cameraLiveFeedImage.transform.GetChild(0).gameObject.SetActive(true);
             await InitializeCameraAsync();
         }
         else
         {
             cameraContainer.SetActive(false);
-            isBarcode = false;
+            //isLiveCameraOn = false;
             webcamTexture.Stop();
         }
         
@@ -176,7 +228,7 @@ public class MRTKScreenshotManager : MonoBehaviour
     public void TakeScreenshot()
     {
 
-        if (isBarcode)
+        if (isCameraOn)
             return;
 
         isScreenshot = true;
@@ -192,7 +244,7 @@ public class MRTKScreenshotManager : MonoBehaviour
 
     public void CountCartons()
     {
-        if (isBarcode)
+        if (isCameraOn)
             return;
 
         SetText("CountCartons");
@@ -222,9 +274,9 @@ public class MRTKScreenshotManager : MonoBehaviour
 
     public void ScanBarcode()
     {
+        if(widgetType != WidgetType.Barcode)
+            return;
         
-        //StartCoroutine(TakeARScreenshot());
-
         SetText("ScanBarcode");
         //StartCoroutine(GetBarcodePic());
         StartCoroutine(ApplyTexture());
@@ -243,43 +295,51 @@ public class MRTKScreenshotManager : MonoBehaviour
         BarcodeManager.Instance.SendBarcodeForScan(screenshotTexture);
     }
 
+    #endregion
 
-    IEnumerator ApplyTexture()
+    #region Color Matching
+
+    bool isApprovedUploaded = false;
+
+    public void CaptureProduct()
     {
-        SetText("Screenshot");
-        screenshotTexture = new Texture2D(webcamTexture.width, webcamTexture.height);
-        Debug.Log(webcamTexture.isPlaying);
-        // Copy the pixels from the WebCamTexture to the Texture2D
-        if (webcamTexture.isPlaying)
+        if (widgetType != WidgetType.ColorMatch)
+            return;
+
+        CheckApprovedUploaded();
+        StartCoroutine(ApplyTexture());
+    }
+
+
+    public void SendApprovedProduct()
+    {
+        Loader(true);
+        ColorMatchingManager.Instance.SendApprovedToServer(screenshotTexture);
+    }
+
+    public void SwitchApprovedUpload(bool status)
+    {
+        isApprovedUploaded = status;
+    }
+
+    public void CheckApprovedUploaded()
+    {
+        if(!isApprovedUploaded)
         {
-            screenshotTexture.SetPixels(webcamTexture.GetPixels());
-            //statusText.text = "<color=white>GetPixels</color>";
+            addButton.SetActive(true);
+            validateButton.SetActive(false);
         }
-        yield return new WaitForEndOfFrame();
-        screenshotTexture.Apply();
-
-        cameraLiveFeedImage.texture = screenshotTexture;
-
-        barcodeValidateButtons.SetActive(true);
-        //statusText.gameObject.SetActive(false);
+        else
+        {
+            addButton.SetActive(false);
+            validateButton.SetActive(true);
+        }
     }
 
-    public void DeleteBarcode()
+    public void SendInspectionProduct()
     {
-        SetText("<color=red>Delete</color>");
-
-        //statusText.gameObject.SetActive(true);
-        HideScreenshot();
-    }
-
-    void HideScreenshot()
-    {
-        if(!webcamTexture.isPlaying)
-            webcamTexture.Play();
-
-        barcodeValidateButtons.SetActive(false);
-        cameraLiveFeedImage.texture = webcamTexture;
-        Destroy(screenshotTexture);
+        Loader(true);
+        ColorMatchingManager.Instance.SendInspectionToServer(screenshotTexture);
     }
 
     #endregion
@@ -309,6 +369,11 @@ public class MRTKScreenshotManager : MonoBehaviour
     //Initialize camera using async task
     private async Task InitializeCameraAsync()
     {
+
+        if (webcamTexture != null)
+            if (webcamTexture.isPlaying)
+                return;
+
         webcamTexture = new WebCamTexture(camWidth, camHeight, camRequestFPS);
         cameraLiveFeedImage.texture = webcamTexture;
         webcamTexture.Play();
@@ -326,6 +391,54 @@ public class MRTKScreenshotManager : MonoBehaviour
         //webcamTexture.Play();
         cameraContainer.SetActive(true);
     }
+
+
+    IEnumerator ApplyTexture()
+    {
+        SetText("Screenshot");
+        //
+
+        screenshotTexture = new Texture2D(webcamTexture.width, webcamTexture.height);
+        Debug.Log(webcamTexture.isPlaying);
+        // Copy the pixels from the WebCamTexture to the Texture2D
+        if (webcamTexture.isPlaying)
+        {
+            screenshotTexture.SetPixels(webcamTexture.GetPixels());
+            //statusText.text = "<color=white>GetPixels</color>";
+        }
+        yield return new WaitForEndOfFrame();
+        screenshotTexture.Apply();
+
+        cameraLiveFeedImage.texture = screenshotTexture;
+
+        switch(widgetType)
+        {
+            case WidgetType.Barcode:
+                barcodeValidateButtons.SetActive(true);
+                colorMatchValidateButtons.SetActive(false);
+                break;
+            case WidgetType.ColorMatch:
+                barcodeValidateButtons.SetActive(false);
+                colorMatchValidateButtons.SetActive(true);
+                break;
+        }
+        
+        //statusText.gameObject.SetActive(false);
+    }
+
+
+    public void DeletePreview()
+    {
+        if (!webcamTexture.isPlaying)
+            webcamTexture.Play();
+
+        barcodeValidateButtons.SetActive(false);
+        colorMatchValidateButtons.SetActive(false);
+        
+        cameraLiveFeedImage.texture = webcamTexture;
+        Destroy(screenshotTexture);
+    }
+
 
     public async void StartCamera(int index)
     {
@@ -481,7 +594,6 @@ public class MRTKScreenshotManager : MonoBehaviour
 
         SetText("<color=green>Saved</color>");
         //statusText.gameObject.SetActive(true);
-        HideScreenshot();
     }
 
     #endregion
