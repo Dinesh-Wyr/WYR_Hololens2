@@ -3,6 +3,8 @@ using MixedReality.Toolkit.UX;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class LoginMetaUI : MonoBehaviour
 {
@@ -200,6 +202,23 @@ public class LoginMetaUI : MonoBehaviour
             textProUGUI.text += debug;
         else
             textProUGUI.text += "<color=red>" + debug + "</color>";
+
+        ScrollToLast();
+
+
+    }
+
+    void ScrollToLast()
+    {
+        // Get the content rect and its height
+        RectTransform contentRect = debugContent.GetComponent<RectTransform>();
+        float contentHeight = contentRect.rect.height;
+
+        // Calculate the normalized position to scroll to the bottom
+        float normalizedPosition = 1f - (debugContent.parent.GetComponent<RectTransform>().rect.height / contentHeight);
+
+        // Set the normalized position of the ScrollView
+        debugContent.parent.parent.GetComponent<ScrollRect>().normalizedPosition = new Vector2(0f, normalizedPosition-200);
     }
 
 

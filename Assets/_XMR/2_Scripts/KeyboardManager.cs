@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using MixedReality.Toolkit.Examples.Demos;
 using System;
+using MixedReality.Toolkit.UX;
 #if WINDOWS_UWP
 using Windows.UI.Text.Core;
 #endif
@@ -42,7 +43,7 @@ public class KeyboardManager : MonoBehaviour
     private static TMP_InputField inputfield;
     private static string lastText;
     private static NonNativeKeyboard keyboard;
-    private static bool voiceTyping = true;
+    private static bool voiceTyping = false;
     private static string lastUtterance;
  
     TMP_InputField currentInputField;
@@ -69,7 +70,7 @@ public class KeyboardManager : MonoBehaviour
         CoreTextEditContext _editContext = manager.CreateEditContext();
         _editContext.InputPaneDisplayPolicy = CoreTextInputPaneDisplayPolicy.Manual;
 #endif
-        SwitchVoiceTyping();
+        //SwitchVoiceTyping();
 
         isKeyboardOn = false;
         Debug.Log("Closed " + isKeyboardOn);
@@ -239,12 +240,16 @@ public class KeyboardManager : MonoBehaviour
     public void SwitchVoiceTyping()
     {
         voiceTyping = !voiceTyping;
-        
 
+        LoginMetaUI.Instance.Log("SwitchVoiceTyping");
         if (voiceTyping)
             DictationHandler.Instance.StartRecognition();
         else
+        {
+            
             DictationHandler.Instance.StopRecognition();
+        }
+
 
         SwitchButtonImage(voiceTyping);
     }
@@ -267,6 +272,11 @@ public class KeyboardManager : MonoBehaviour
             LoginMetaUI.Instance.Log("Voice Typing Disabled");
         }
         DictationHandler.recognized = string.Empty;
+    }
+
+    public void SetVoiceButtonInteractable(bool status)
+    {
+        voiceTypingButton.GetComponent<PressableButton>().enabled = status;
     }
 
     /// <summary>

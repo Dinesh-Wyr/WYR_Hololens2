@@ -5,9 +5,12 @@
 #pragma warning disable CS1591
 
 using MixedReality.Toolkit.Subsystems;
+using Microsoft.MixedReality.Toolkit;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Threading;
+using System;
 
 namespace MixedReality.Toolkit.Examples.Demos
 {
@@ -63,68 +66,118 @@ namespace MixedReality.Toolkit.Examples.Demos
             if(Instance == null)
                 Instance = this;
         }
+
+        bool isDictationStarted = false;
+
+        float timer = 0f;
+
+        private void Update()
+        {
+            if(isDictationStarted)
+            {
+                timer += Time.deltaTime;
+            }
+
+        }
+
         /// <summary>
         /// Start dictation on a DictationSubsystem.
         /// </summary>
         public void StartRecognition()
         {
-
-            LoginMetaUI.Instance.Log("StartRecognition");
-            // Make sure there isn't an ongoing recognition session
-            StopRecognition();
-
-
-            dictationSubsystem = XRSubsystemHelpers.DictationSubsystem;
-
-            if (dictationSubsystem != null)
+            try
             {
+                LoginMetaUI.Instance.Log("StartRecognition");
+                // Make sure there isn't an ongoing recognition session
+                StopRecognition();
 
-                keywordRecognitionSubsystem = XRSubsystemHelpers.KeywordRecognitionSubsystem;
 
-                if (keywordRecognitionSubsystem != null)
+                dictationSubsystem = XRSubsystemHelpers.DictationSubsystem;
+
+                if (dictationSubsystem != null)
                 {
-                    keywordRecognitionSubsystem.Stop();
-                    LoginMetaUI.Instance.Log("keywordRecognitionSubsystem stop");
-                }
 
-                dictationSubsystem.Recognizing += DictationSubsystem_Recognizing;
-                dictationSubsystem.Recognized += DictationSubsystem_Recognized;
-                dictationSubsystem.RecognitionFinished += DictationSubsystem_RecognitionFinished;
-                dictationSubsystem.RecognitionFaulted += DictationSubsystem_RecognitionFaulted;
-                dictationSubsystem.StartDictation();
-                LoginMetaUI.Instance.Log("keywordRecognitionSubsystem");
+                    keywordRecognitionSubsystem = XRSubsystemHelpers.KeywordRecognitionSubsystem;
+
+                    if (keywordRecognitionSubsystem != null)
+                    {
+                        keywordRecognitionSubsystem.Stop();
+                        LoginMetaUI.Instance.Log("keywordRecognitionSubsystem stop");
+                    }
+
+                    dictationSubsystem.Recognizing += DictationSubsystem_Recognizing;
+                    dictationSubsystem.Recognized += DictationSubsystem_Recognized;
+                    dictationSubsystem.RecognitionFinished += DictationSubsystem_RecognitionFinished;
+                    dictationSubsystem.RecognitionFaulted += DictationSubsystem_RecognitionFaulted;
+                    dictationSubsystem.StartDictation();
+                    isDictationStarted = true;
+                    LoginMetaUI.Instance.Log("keywordRecognitionSubsystem");
+                }
+                else
+                {
+                    OnRecognitionFaulted.Invoke("Cannot find a running DictationSubsystem. Please check the MRTK profile settings " +
+                        "(Project Settings -> MRTK3) and/or ensure a DictationSubsystem is running.");
+                }
             }
-            else
+            catch (Exception e)
             {
-                OnRecognitionFaulted.Invoke("Cannot find a running DictationSubsystem. Please check the MRTK profile settings " +
-                    "(Project Settings -> MRTK3) and/or ensure a DictationSubsystem is running.");
+                LoginMetaUI.Instance.Log("Exception in StartRecognition: " + e.Message);
             }
         }
 
         private void DictationSubsystem_RecognitionFaulted(DictationSessionEventArgs obj)
         {
-            OnRecognitionFaulted.Invoke(obj.ReasonString);
-            HandleDictationShutdown();
-            LoginMetaUI.Instance.Log("DictationSubsystem_RecognitionFaulted");
+            try
+            {
+                OnRecognitionFaulted.Invoke(obj.ReasonString);
+                HandleDictationShutdown();
+                LoginMetaUI.Instance.Log("DictationSubsystem_RecognitionFaulted");
+            }
+            catch (Exception e)
+            {
+                LoginMetaUI.Instance.Log("Exception in DictationSubsystem_RecognitionFaulted: " + e.Message);
+            }
         }
 
         private void DictationSubsystem_RecognitionFinished(DictationSessionEventArgs obj)
         {
-            OnRecognitionFinished.Invoke(obj.ReasonString);
-            HandleDictationShutdown();
-            LoginMetaUI.Instance.Log("DictationSubsystem_RecognitionFinished");
+            try
+            {
+                OnRecognitionFinished.Invoke(obj.ReasonString);
+                HandleDictationShutdown();
+                LoginMetaUI.Instance.Log("DictationSubsystem_RecognitionFinished");
 
-        }
+                TurnOnKeywordsCommand();
+            }
+            catch(Exception e)
+            {
+                LoginMetaUI.Instance.Log("Exception in DictationSubsystem_RecognitionFinished: " + e.Message);
+            }
+}
 
         private void DictationSubsystem_Recognized(DictationResultEventArgs obj)
         {
-            recognized += " " + obj.Result;
-            OnSpeechRecognized.Invoke(recognized);
+            try
+            {
+                recognized += " " + obj.Result;
+                OnSpeechRecognized.Invoke(recognized);
+            }
+            catch (Exception e)
+            {
+                LoginMetaUI.Instance.Log("Exception in DictationSubsystem_Recognized: " + e.Message);
+            }
         }
 
         private void DictationSubsystem_Recognizing(DictationResultEventArgs obj)
         {
-            OnSpeechRecognizing.Invoke(obj.Result);
+            try
+            {
+                OnSpeechRecognizing.Invoke(obj.Result);
+            }
+            catch (Exception e)
+            {
+                LoginMetaUI.Instance.Log("Exception in DictationSubsystem_Recognizing: " + e.Message);
+            }
         }
 
         /// <summary>
@@ -132,12 +185,21 @@ namespace MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void StopRecognition()
         {
-            LoginMetaUI.Instance.Log("StopRecognition");
-            if (dictationSubsystem != null)
+            try
             {
-                dictationSubsystem.StopDictation();
-                LoginMetaUI.Instance.Log("dictationSubsystem nStopRecognition");
-                recognized = string.Empty;
+                LoginMetaUI.Instance.Log("StopRecognition");
+
+                if (dictationSubsystem != null)
+                {
+                    KeyboardManager.Instance.SetVoiceButtonInteractable(false);
+                    dictationSubsystem.StopDictation();
+                    LoginMetaUI.Instance.Log("dictationSubsystem nStopRecognition");
+                    recognized = string.Empty;
+                }
+            }
+            catch (Exception e)
+            {
+                LoginMetaUI.Instance.Log("Exception in StopRecognition: " + e.Message);
             }
         }
         
@@ -149,25 +211,47 @@ namespace MixedReality.Toolkit.Examples.Demos
         {
             LoginMetaUI.Instance.Log("HandleDictationShutdown");
 
-
-            if (dictationSubsystem != null)
+            try
             {
-                dictationSubsystem.Recognizing -= DictationSubsystem_Recognizing;
-                dictationSubsystem.Recognized -= DictationSubsystem_Recognized;
-                dictationSubsystem.RecognitionFinished -= DictationSubsystem_RecognitionFinished;
-                dictationSubsystem.RecognitionFaulted -= DictationSubsystem_RecognitionFaulted;
-                LoginMetaUI.Instance.Log("HandleDictationShutdown dictationSubsystem not null");
-                dictationSubsystem = null;
+                if (dictationSubsystem != null)
+                {
+                    dictationSubsystem.Recognizing -= DictationSubsystem_Recognizing;
+                    dictationSubsystem.Recognized -= DictationSubsystem_Recognized;
+                    dictationSubsystem.RecognitionFinished -= DictationSubsystem_RecognitionFinished;
+                    dictationSubsystem.RecognitionFaulted -= DictationSubsystem_RecognitionFaulted;
+                    LoginMetaUI.Instance.Log("HandleDictationShutdown dictationSubsystem not null");
+                    dictationSubsystem = null;
+                }
             }
-
-            if (keywordRecognitionSubsystem != null)
+            catch(Exception e)
             {
-                keywordRecognitionSubsystem.Start();
-                keywordRecognitionSubsystem = null;
-                LoginMetaUI.Instance.Log("keywordRecognitionSubsystem start");
+                LoginMetaUI.Instance.Log("Exception in HandleDictationShutdown: " + e.Message);
             }
+            
+        }
 
-            KeyboardManager.Instance.SwitchButtonImage(false);
+        void TurnOnKeywordsCommand()
+        {
+            try
+            {
+                if (keywordRecognitionSubsystem != null)
+                {
+                    keywordRecognitionSubsystem.Start();
+                    keywordRecognitionSubsystem = null;
+                    LoginMetaUI.Instance.Log("keywordRecognitionSubsystem start");
+                }
+
+                KeyboardManager.Instance.SwitchButtonImage(false);
+
+                isDictationStarted = false;
+                LoginMetaUI.Instance.Log("Timer: " + Mathf.FloorToInt(timer));
+                timer = 0;
+                KeyboardManager.Instance.SetVoiceButtonInteractable(true);
+            }
+            catch (Exception e)
+            {
+                LoginMetaUI.Instance.Log("Exception in TurnOnKeywordsCommand: " + e.Message);
+            }
         }
     }
 }
