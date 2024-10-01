@@ -65,6 +65,7 @@ public class ApiCallUtility : MonoBehaviour
         }
 
         www.SetRequestHeader("authorization", "Bearer " + GlobalData.Token);
+        www.SetRequestHeader("geolocation", JsonUtility.ToJson(GlobalData.geoLocation));
 
         yield return www.SendWebRequest();
         Debug.Log(www.result);

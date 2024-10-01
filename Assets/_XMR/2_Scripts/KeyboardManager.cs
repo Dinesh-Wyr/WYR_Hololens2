@@ -206,7 +206,7 @@ public class KeyboardManager : MonoBehaviour
         {
             voiceTypingImage.sprite = voiceTypingOn;
             voiceTypingImage.color = voiceTypingOnColor;
-            dictationHandler.StartRecognition();
+            //dictationHandler.StartRecognition();
             dictationHandler.recognized = "";
             Debug.Log("Voice Typing Enabled");
         }
@@ -214,7 +214,7 @@ public class KeyboardManager : MonoBehaviour
         {
             voiceTypingImage.sprite = voiceTypingOff;
             voiceTypingImage.color = voiceTypingOffColor;
-            dictationHandler.StopRecognition();
+            //dictationHandler.StopRecognition();
             Debug.Log("Voice Typing Disabled");
         }
 

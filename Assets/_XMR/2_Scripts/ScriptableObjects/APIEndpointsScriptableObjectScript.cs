@@ -19,6 +19,9 @@ public class APIEndpointsScriptableObjectScript : ScriptableObject
     // API endpoints
     public string loginEndPoint = "registration/login";
     public string dashboardEndPoint = "meta_dashboard/dashboard_get";
+
+    [Space(10)]
+    public string startInspectionEndPoint = "metaQuest/dashboard/inspectionStart";
     public string GetS3EndPoint = "videoInspection/image_S3";
     public string S3PostCommentsEndPoint = "videoInspection/image_Url"; 
     public string getDocsEndPoint = "required_docs/docs_get";

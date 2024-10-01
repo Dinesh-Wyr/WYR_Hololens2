@@ -17,7 +17,7 @@ MonoBehaviour:
   localBaseURL: http://192.168.1.48:5000/api/
   GetCartonCountURL: https://ml.dev.wyrai.com/carton/carton_counter_fs
   loginEndPoint: registration/login
-  dashboardEndPoint: meta_dashboard/dashboard_get
+  dashboardEndPoint: metaQuest/dashboard/dashboardGet
   GetS3EndPoint: videoInspection/image_S3
   S3PostCommentsEndPoint: videoInspection/image_Url
   getDocsEndPoint: required_docs/docs_get
@@ -27,6 +27,8 @@ MonoBehaviour:
   addCriteriaEndPoint: inspection_criteria/criteriaAdd
   updateCriteriaEndPoint: inspection_criteria/criteriaUpdate
   barcodeScannerEndPoint: barcode/barcodeScanner
+  uploadImageEndPoint: colorMatch/colorMatchImageUpload
+  colorMatchEndPoint: colorMatch/colorMatching
   map_user_nameEndPoint: live/userChannel
   GetUserNameEndpoint: live/userChannel
   ShareChannelEndPoint: live/channel

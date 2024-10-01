@@ -107,7 +107,6 @@ public class InspectionCriteriaManager : MonoBehaviour
         Debug.Log(updateUrl);
 
         StartCoroutine(ApiCallUtility.Instance.DelayedCall(1, GetData));
-
     }
 
 

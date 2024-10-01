@@ -16,8 +16,11 @@ public class LoginMetaUI : MonoBehaviour
     public GameObject barcodeCameraButton;
     public GameObject colorMatchButton;
 
+    [SerializeField] GameObject loader;
+
     public static NonNativeKeyboard keyboard;
     public static PO_Item po_instance;
+    public static ProductItem productInstance;
     public static TMP_InputField selected_field;
     public static LoginMetaUI Instance;
     
@@ -164,17 +167,20 @@ public class LoginMetaUI : MonoBehaviour
         GlobalData.plid = null;
         GlobalData.plNumber = null;
         GlobalData.poNumber = null;
+        GlobalData.productID = null;
         UIEventSystem.EndInspection();
         //LivestreamUIManager.Instance.StopStreaming();
         barcodeCameraButton.SetActive(false);
         colorMatchButton.SetActive(false);
         //CommunicationUIManager.Instance.LeaveChannel();
+        Loader(true);
         UIEventSystem.TabGroupChange(TabGroups.Dashboard);
 
     }
 
     void EndInspectionResponse(string json)
-    {/*
+    {
+        /*
         UserMappingResponse response = JsonUtility.FromJson<UserMappingResponse>(json);
         if (response != null)
         {
@@ -188,6 +194,11 @@ public class LoginMetaUI : MonoBehaviour
         }*/
     }
 
+
+    public void Loader(bool status)
+    {
+        loader.SetActive(status);
+    }
 
 }
 

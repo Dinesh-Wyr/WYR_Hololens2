@@ -12,11 +12,19 @@ public static class GlobalData
     public static string Token;
     public static bool IsLoggedIn;
 
+    public static GeoLocation geoLocation;
+
+    public static string Latitude;
+    public static string Longitude;
+
     public static string poid;
     public static string plid;
 
     public static string poNumber;
     public static string plNumber;
+
+    public static string productID;
+
 
     public static string RequiredDocsId;
     public static string InspectionCriteriaId;

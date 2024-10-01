@@ -64,7 +64,11 @@ public class LoginManager : MonoBehaviour
         form.AddField("email", email);
         form.AddField("password", password);
 
+
+
         using UnityWebRequest www = UnityWebRequest.Post(uri, form);
+
+        www.SetRequestHeader("geolocation", JsonUtility.ToJson(GlobalData.geoLocation));
 
         loginButton.SetActive(false);
         loader.SetActive(true);
@@ -81,8 +85,6 @@ public class LoginManager : MonoBehaviour
         }
         else
         {
-            
-
             Debug.Log(www.downloadHandler.text);
             LoginData data = JsonUtility.FromJson(www.downloadHandler.text, typeof(LoginData)) as LoginData;
             GlobalData.Token = data.token;
@@ -115,6 +117,5 @@ public class LoginManager : MonoBehaviour
         loginButton.SetActive(true);
         loader.SetActive(false);
         UIEventSystem.TabGroupChange(TabGroups.Login);
-
     }
 }

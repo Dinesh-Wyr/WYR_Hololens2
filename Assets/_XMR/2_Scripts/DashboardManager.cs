@@ -1,11 +1,5 @@
 using UnityEngine;
 
-public class DashboardResponse
-{
-    public string message;
-    public PLData[] PlDataFind;
-}
-
 public class DashboardManager : MonoBehaviour
 {
     [SerializeField]
@@ -43,19 +37,22 @@ public class DashboardManager : MonoBehaviour
     {
         DashboardResponse response = JsonUtility.FromJson<DashboardResponse>(json);
         
-        if(response.PlDataFind == null)
+        if(response.data == null)
         {
             return;
         }
 
+
         clearObjects();
 
-        foreach(PLData dataItem in response.PlDataFind)
+        foreach(PLData dataItem in response.data)
         {
             GameObject obj = Instantiate(dashboardItem, listParent);
             obj.GetComponent<DashboardItem>().PopulateDashboardItemInfo(dataItem);
         }
-        
+
+        LoginMetaUI.Instance.Loader(false);
+
     }
 
 }

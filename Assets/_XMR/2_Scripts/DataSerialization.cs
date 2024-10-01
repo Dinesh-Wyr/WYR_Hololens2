@@ -4,7 +4,60 @@ using UnityEngine;
 
 #region DataSerialization
 
-[System.Serializable]
+[Serializable]
+public class GeoLocation
+{
+    public double latitude;
+    public double longitude;
+}
+
+[Serializable]
+public class DashboardResponse
+{
+    public string message;
+    public List<PLData> data;
+}
+
+[Serializable]
+public class PLData
+{
+    public string packingId;
+    public string packingList;
+    public List<PurchaseOrder> purchaseOrders;
+}
+
+[Serializable]
+public class PurchaseOrder
+{
+    public string poId;
+    public string poNumber;
+    public List<Product> products;
+}
+
+[Serializable]
+public class Product
+{
+    public string productId;
+    public string styleId;
+    public string styleName;
+    public string color;
+    public string quantity;
+    public string size;
+    public string status;
+}
+
+[Serializable]
+public class ProductID
+{
+    public string productId;
+}
+
+public class ResponseMessage
+{
+    public string message;
+}
+
+[Serializable]
 public class S3RequestData
 {
     public string poid;
