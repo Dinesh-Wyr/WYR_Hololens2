@@ -1,8 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+
+public enum CameraTabs
+{
+    Barcode,
+    ColorMatch
+}
+
 public class PalmWheelCameraControl : MonoBehaviour
 {
+    [SerializeField] CameraTabs cameraTab;
+
     [SerializeField]
     Image imageComponent;
     [SerializeField]
@@ -15,27 +24,53 @@ public class PalmWheelCameraControl : MonoBehaviour
     [Space(10)]
     [SerializeField]
     GameObject QuestGuideFrame;
+
+    private void OnEnable()
+    {
+        UIEventSystem.OnCameraTabChange += OnCameraTabChange;
+    }
+
+    private void OnDisable()
+    {
+        UIEventSystem.OnCameraTabChange -= OnCameraTabChange;
+    }
+
     public void ToggleTab()
     {
+        
 
         if (MRTKScreenshotManager.Instance.isScreenshot && MRTKScreenshotManager.Instance.isCartons)
             return;
 
-        isActive = !isActive;
+        UIEventSystem.CameraTabChange(cameraTab);
+    }
 
-        if (isActive)
+    void OnCameraTabChange(CameraTabs tab)
+    {
+        if (MRTKScreenshotManager.Instance.isCameraOn && MRTKScreenshotManager.Instance.selectedCameraTab != tab)
+            return;
+
+
+        if (tab == this.cameraTab)
         {
-            imageComponent.color = activatedColor;
-            //if (QuestGuideFrame != null)
-            //    QuestGuideFrame.SetActive(false);
+            isActive = !isActive;
+
+            if (isActive)
+            {
+                imageComponent.color = activatedColor;
+
+            }
+            else
+            {
+                imageComponent.color = deactivatedColor;
+            }
+
+            MRTKScreenshotManager.Instance.SwitchCameraContainer(tab);
         }
         else
         {
             imageComponent.color = deactivatedColor;
-            //if (QuestGuideFrame != null)
-              //  QuestGuideFrame.SetActive(true);
+            isActive = false;
         }
-
-        //PalmWheelManager.Instance.UseExternalCamera = isActive;
     }
 }

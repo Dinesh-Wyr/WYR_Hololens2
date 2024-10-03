@@ -1701,18 +1701,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 599825116}
-        m_TargetAssemblyTypeName: MRTKScreenshotManager, Assembly-CSharp
-        m_MethodName: SwitchCameraContainer
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
@@ -1749,6 +1737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cf02c0a89e77be4894e84727bf52432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraTab: 1
   imageComponent: {fileID: 74226967}
   activatedColor:
     serializedVersion: 2
@@ -10065,6 +10054,8 @@ MonoBehaviour:
   loader: {fileID: 1609512161}
   cameraLiveFeedImage: {fileID: 529905126}
   FPSText: {fileID: 1175745654}
+  isCameraOn: 0
+  selectedCameraTab: 0
   isScreenshot: 0
   isCartons: 0
 --- !u!1 &604305181
@@ -108476,6 +108467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cf02c0a89e77be4894e84727bf52432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraTab: 0
   imageComponent: {fileID: 713931984717111563}
   activatedColor:
     serializedVersion: 2
@@ -137743,18 +137735,6 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: PalmWheelCameraControl, Assembly-CSharp
         m_MethodName: ToggleTab
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 599825116}
-        m_TargetAssemblyTypeName: MRTKScreenshotManager, Assembly-CSharp
-        m_MethodName: SwitchCameraContainer
-        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

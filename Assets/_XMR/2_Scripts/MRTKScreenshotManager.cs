@@ -1,27 +1,24 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
-using UnityEditor.XR;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Windows.WebCam;
 
 #if WINDOWS_UWP
 using Windows.Storage;
 #endif
-
+/*
 [Serializable]
 public enum WidgetType
 {
     Barcode,
     ColorMatch
 }
-
+*/
 public class MRTKScreenshotManager : MonoBehaviour
 {
 
@@ -41,7 +38,7 @@ public class MRTKScreenshotManager : MonoBehaviour
     GameObject guideFrame;
     GameObject addButton, validateButton;
 
-    bool isCameraOn;
+    public bool isCameraOn;
     WebCamTexture webcamTexture;
     Texture2D screenshotTexture;
 
@@ -50,7 +47,7 @@ public class MRTKScreenshotManager : MonoBehaviour
     int camHeight = 0;
     int camRequestFPS = 0;
 
-    WidgetType widgetType;
+    public CameraTabs selectedCameraTab;
 
     private void Awake()
     {
@@ -82,15 +79,19 @@ public class MRTKScreenshotManager : MonoBehaviour
         // Display FPS in the console (optional)
         FPSText.text = fps.ToString();
 
+#if UNITY_EDITOR
+
         if(Input.GetKeyUp(KeyCode.P))
         {
             CaptureProduct();
         }
 
-        if(Input.GetKeyUp(KeyCode.M))
+        if(Input.GetKeyUp(KeyCode.B))
         {
-
+            ScanBarcode();
         }
+
+#endif
     }
 
     public void Loader(bool status)
@@ -98,25 +99,20 @@ public class MRTKScreenshotManager : MonoBehaviour
         loader.SetActive(status);
     }
 
-    //bool isLiveCameraOn;
-    /// <summary>
-    /// 0 = Barcode
-    /// 1 = Color Matching
-    /// </summary>
-    /// <param name="widget"></param>
-    public async void SwitchCameraContainer(int widget)
+   
+    public async void SwitchCameraContainer(CameraTabs tabs)
     {
         if (isScreenshot && isCartons)
             return;
 
-        switch(widget)
+        selectedCameraTab = tabs;
+
+        switch (selectedCameraTab)
         {
-            case 0:
-                widgetType = WidgetType.Barcode;
+            case CameraTabs.Barcode:
                 guideFrame.SetActive(true);
                 break;
-            case 1:
-                widgetType = WidgetType.ColorMatch;
+            case CameraTabs.ColorMatch:
                 guideFrame.SetActive(false);
                 break;
         }
@@ -274,7 +270,7 @@ public class MRTKScreenshotManager : MonoBehaviour
 
     public void ScanBarcode()
     {
-        if(widgetType != WidgetType.Barcode)
+        if(selectedCameraTab != CameraTabs.Barcode)
             return;
         
         SetText("ScanBarcode");
@@ -303,7 +299,7 @@ public class MRTKScreenshotManager : MonoBehaviour
 
     public void CaptureProduct()
     {
-        if (widgetType != WidgetType.ColorMatch)
+        if (selectedCameraTab != CameraTabs.ColorMatch)
             return;
 
         CheckApprovedUploaded();
@@ -387,9 +383,14 @@ public class MRTKScreenshotManager : MonoBehaviour
         cameraLiveFeedImage.texture = webcamTexture;
 
 
+        barcodeValidateButtons.SetActive(false);
+        colorMatchValidateButtons.SetActive(false);
+
         // Start playing the webcam texture
         //webcamTexture.Play();
         cameraContainer.SetActive(true);
+
+        
     }
 
 
@@ -411,13 +412,13 @@ public class MRTKScreenshotManager : MonoBehaviour
 
         cameraLiveFeedImage.texture = screenshotTexture;
 
-        switch(widgetType)
+        switch(selectedCameraTab)
         {
-            case WidgetType.Barcode:
+            case CameraTabs.Barcode:
                 barcodeValidateButtons.SetActive(true);
                 colorMatchValidateButtons.SetActive(false);
                 break;
-            case WidgetType.ColorMatch:
+            case CameraTabs.ColorMatch:
                 barcodeValidateButtons.SetActive(false);
                 colorMatchValidateButtons.SetActive(true);
                 break;

@@ -20,7 +20,9 @@ public class PalmWheelTab : MonoBehaviour
 
     void OnWheelTabChange(PalmWheelTabs tab)
     {
-        if(tab == this.tab)
+       
+
+        if (tab == this.tab)
         {
             
             isActive = !isActive;

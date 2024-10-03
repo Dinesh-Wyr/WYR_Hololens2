@@ -11,6 +11,7 @@ public static class UIEventSystem
     public static event Action OnEndInspection;
 
     public static event Action<PalmWheelTabs> OnWheelTabChange;
+    public static event Action<CameraTabs> OnCameraTabChange;
 
     public static event Action OnMeasureInCm;
     public static event Action OnMeasureInInch;
@@ -31,6 +32,8 @@ public static class UIEventSystem
         OnTabChange?.Invoke(tab);
     }
 
+
+
     public static void TabGroupChange(TabGroups tabGroup)
     {
         OnTabGroupChange?.Invoke(tabGroup);
@@ -49,6 +52,11 @@ public static class UIEventSystem
     public static void WheelTabChange(PalmWheelTabs tab)
     {
         OnWheelTabChange?.Invoke(tab);
+    }
+
+    public static void CameraTabChange(CameraTabs tab)
+    {
+        OnCameraTabChange?.Invoke(tab);
     }
 
     public static void MeasureInCm()
