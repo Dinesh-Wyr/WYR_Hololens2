@@ -21,26 +21,23 @@ public class APIEndpoints : MonoBehaviour
 
     [HideInInspector]
     public string loginEndPoint, dashboardEndPoint, startInspectionEndPoint, GetS3EndPoint, 
-        S3PostCommentsEndPoint, getDocsEndPoint, addDocsEndPoint, updateDocsEndPoint, 
+        S3PostCommentsEndPoint, getDocsEndPoint, updateDocsEndPoint, 
         getCriteriaEndPoint, addCriteriaEndPoint, updateCriteriaEndPoint, 
         barcodeScannerEndPoint, uploadImageEndPoint, colorMatchEndPoint;
 
     // API endpoints
     [HideInInspector]
-    public string GetCartonCountURL, map_user_nameEndPoint, GetUserNameEndpoint, ShareChannelEndPoint, EndInspectionEndPoint;
+    public string GetCartonCountURL, map_user_nameEndPoint, 
+        GetUserNameEndpoint, ShareChannelEndPoint, EndInspectionEndPoint;
 
     // baseURL for all API's
     [HideInInspector]
     public string baseURL;
 
-    
-
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
-
-        
     }
 
     private void Start()
@@ -72,7 +69,6 @@ public class APIEndpoints : MonoBehaviour
         GetS3EndPoint = apiEndpointsObject.GetS3EndPoint;
         S3PostCommentsEndPoint = apiEndpointsObject.S3PostCommentsEndPoint;
         getDocsEndPoint = apiEndpointsObject.getDocsEndPoint;
-        addDocsEndPoint = apiEndpointsObject.addDocsEndPoint;
         updateDocsEndPoint = apiEndpointsObject.updateDocsEndPoint;
         getCriteriaEndPoint = apiEndpointsObject.getCriteriaEndPoint;
         addCriteriaEndPoint = apiEndpointsObject.addCriteriaEndPoint;

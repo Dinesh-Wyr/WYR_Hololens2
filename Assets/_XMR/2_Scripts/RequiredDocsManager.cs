@@ -1,114 +1,27 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class RequiredDocsGetResponse
-{
-    public string message;
-    public RequiredDocsResponse RDocCheck;
-}
-
-[Serializable]
-public class RequiredDocsCreateResponse
-{
-    public string message;
-    public RequiredDocsResponse RDocCheck;
-}
-
-[Serializable]
-public class RequiredDocs
-{
-    public string poid;
-    public string plid;
-    public RequiredDocsRow purchaseOrder;
-    public RequiredDocsRow measurementSpecification;
-    public RequiredDocsRow referenceSample;
-    public RequiredDocsRow QCFile;
-    public RequiredDocsRow testReport;
-    public RequiredDocsRow supplierInjectionReport;
-    public RequiredDocsRow packingList;
-    public RequiredDocsRow other;
-    public bool isVisited;
-    public bool skip;
-}
-
-[Serializable]
-public class RequiredDocsParameter
-{
-    public string poid;
-    public string plid;
-    public RequiredDocsRow purchaseOrder;
-    public RequiredDocsRow measurementSpecification;
-    public RequiredDocsRow referenceSample;
-    public RequiredDocsRow QCFile;
-    public RequiredDocsRow testReport;
-    public RequiredDocsRow supplierInjectionReport;
-    public RequiredDocsRow packingList;
-    public RequiredDocsRow other;
-    public bool isVisited;
-    public bool skip;
-    public string _id;
-}
-
-[Serializable]
-public class RequiredDocsResponse
-{
-    public string poid;
-    public string plid;
-    public RequiredDocsRow purchaseOrder;
-    public RequiredDocsRow measurementSpecification;
-    public RequiredDocsRow referenceSample;
-    public RequiredDocsRow QCFile;
-    public RequiredDocsRow testReport;
-    public RequiredDocsRow supplierInjectionReport;
-    public RequiredDocsRow packingList;
-    public RequiredDocsRow other;
-    public bool isVisited;
-    public bool skip;
-    public string isCreatedBy;
-    public string _id;
-    public string createdAt;
-    public string updatedAt;
-    public int __v;
-}
 
 public class RequiredDocsManager : MonoBehaviour
 {
     [SerializeField]
-    RequiredDocs doc;
+    GameObject requiredDocsItem;
     [SerializeField]
-    RequiredDocsResponse docResponse;
+    Transform listParent;
 
-    [Header("Doc Rows")]
-    [SerializeField]
-    RequiredDocsItem purchaseOrder;
-    [SerializeField]
-    RequiredDocsItem measurementSpecification;
-    [SerializeField]
-    RequiredDocsItem referenceSample;
-    [SerializeField]
-    RequiredDocsItem QCFile;
-    [SerializeField]
-    RequiredDocsItem testReport;
-    [SerializeField]
-    RequiredDocsItem supplierInjectionReport;
-    [SerializeField]
-    RequiredDocsItem packingList;
-    [SerializeField]
-    RequiredDocsItem other;
+    [Space]
     [SerializeField]
     bool isVisited;
     [SerializeField]
     bool isSkipped;
 
-    [Space(10)]
+    [Space]
     [SerializeField]
     PageMode mode;
 
     string getUrl;
-    string storeUrl;
     string updateUrl;
-
 
     private void OnEnable()
     {
@@ -117,18 +30,13 @@ public class RequiredDocsManager : MonoBehaviour
 
     private void SetURL()
     {
-        getUrl = GlobalData.ApiLink + APIEndpoints.Instance.getDocsEndPoint;
-        storeUrl = GlobalData.ApiLink + APIEndpoints.Instance.addDocsEndPoint;
+        getUrl = GlobalData.ApiLink + APIEndpoints.Instance.getDocsEndPoint + GlobalData.productID;
         updateUrl = GlobalData.ApiLink + APIEndpoints.Instance.updateDocsEndPoint;
 
         Debug.Log(getUrl);
-        Debug.Log(storeUrl);
         Debug.Log(updateUrl);
 
         StartCoroutine(ApiCallUtility.Instance.DelayedCall(1, GetData));
-
-        //GetData();
-
     }
 
     
@@ -136,36 +44,43 @@ public class RequiredDocsManager : MonoBehaviour
     public void GetData()
     {
         mode = PageMode.Create;
-        //Debug.Log("plid : " + GlobalData.plid + " , poid : " + GlobalData.poid);
-        string json = "{\"poid\":\""+GlobalData.poid+"\",\"plid\":\""+GlobalData.plid+"\"}";
-        Debug.Log(json);
-        StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.GET, getUrl, json, callback: loadData));
+        
+        StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.GET, getUrl, callback: loadData));
     }
+
+
+    void clearObjects()
+    {
+        for (int i = 1; i < listParent.childCount; i++)
+        {
+            Destroy(listParent.GetChild(i).gameObject);
+        }
+    }
+
+    RequiredDocsGetResponse response = new RequiredDocsGetResponse();
 
     void loadData(string json)
     {
-        RequiredDocsGetResponse response = JsonUtility.FromJson<RequiredDocsGetResponse>(json);
+        response = JsonUtility.FromJson<RequiredDocsGetResponse>(json);
 
-        if (response.RDocCheck == null)
+        Debug.Log(response);
+
+        if (response.data == null)
         {
             return;
         }
 
+        clearObjects();
+
         mode = PageMode.Update;
 
-        docResponse = response.RDocCheck;
-        purchaseOrder.LoadData(docResponse.purchaseOrder);
-        measurementSpecification.LoadData(docResponse.measurementSpecification);
-        referenceSample.LoadData(docResponse.referenceSample);
-        QCFile.LoadData(docResponse.QCFile);
-        testReport.LoadData(docResponse.testReport);
-        supplierInjectionReport.LoadData(docResponse.supplierInjectionReport);
-        packingList.LoadData(docResponse.packingList);
-        other.LoadData(docResponse.other);
-        isVisited = docResponse.isVisited;
-        isSkipped = docResponse.skip;
-        GlobalData.RequiredDocsId = docResponse._id;
-        
+        foreach (RequiredDocsGetField field in response.data.field)
+        {
+            GameObject obj = Instantiate(requiredDocsItem, listParent);
+            obj.GetComponent<RequiredDocsItem>().PopulateRequiredDocsItem(field);
+        }
+
+        LoginMetaUI.Instance.Loader(false);
     }
 
     public void NextPage()
@@ -173,14 +88,8 @@ public class RequiredDocsManager : MonoBehaviour
         Debug.Log("Page mode : "+mode);
         isVisited = true;
         isSkipped = false;
-        if (mode == PageMode.Create)
-        {
-            CreateData();
-        }
-        else if (mode == PageMode.Update)
-        {
-            UpdateData();
-        }
+
+        UpdateData();
     }
 
     public void BackPage()
@@ -191,68 +100,32 @@ public class RequiredDocsManager : MonoBehaviour
 
     public void SkipPage()
     {
-        if(mode == PageMode.Create)
-        {
-            CreateData(true);
-        }
-        else
-        {
-            UIEventSystem.TabGroupChange(TabGroups.InspectionCriteria);
-        }
-    }
-
-    public void CreateData(bool skip = false)
-    {
-        doc.poid = GlobalData.poid;
-        doc.plid = GlobalData.plid;
-        doc.purchaseOrder = purchaseOrder.GetData();
-        doc.measurementSpecification = measurementSpecification.GetData();
-        doc.referenceSample = referenceSample.GetData();
-        doc.QCFile = QCFile.GetData();
-        doc.testReport = testReport.GetData();
-        doc.supplierInjectionReport = supplierInjectionReport.GetData();
-        doc.packingList = packingList.GetData();
-        doc.other = other.GetData();
-        doc.isVisited = isVisited;
-        doc.skip = skip;
-
-        StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.POST, storeUrl, JsonUtility.ToJson(doc), callback: recordResponse));
+        UIEventSystem.TabGroupChange(TabGroups.InspectionCriteria);
     }
 
     public void UpdateData()
     {
-        RequiredDocsParameter doc = new RequiredDocsParameter();
-        doc.poid = GlobalData.poid;
-        doc.plid = GlobalData.plid;
-        doc.purchaseOrder = purchaseOrder.GetData();
-        doc.measurementSpecification = measurementSpecification.GetData();
-        doc.referenceSample = referenceSample.GetData();
-        doc.QCFile = QCFile.GetData();
-        doc.testReport = testReport.GetData();
-        doc.supplierInjectionReport = supplierInjectionReport.GetData();
-        doc.packingList = packingList.GetData();
-        doc.other = other.GetData();
-        doc.isVisited = isVisited;
-        doc.skip = false;
-        doc._id = docResponse._id;
-        StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.PUT, updateUrl, JsonUtility.ToJson(doc), callback: recordResponse));
+        RequiredDocsUpdateData requiredDocsUpdateData = new RequiredDocsUpdateData();
+
+        requiredDocsUpdateData.productId = GlobalData.productID;
+
+        List<RequiredDocsGetField> fields = new List<RequiredDocsGetField>();
+
+        for (int i = 1; i < listParent.childCount; i++)
+        {
+            fields.Add(listParent.GetChild(i).GetComponent<RequiredDocsItem>().GetData());
+        }
+
+        requiredDocsUpdateData.field = fields;
+        LoginMetaUI.Instance.Loader(true);
+        StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.PUT, updateUrl, JsonUtility.ToJson(requiredDocsUpdateData), callback: recordResponse));
+       
     }
 
     void recordResponse(string json)
     {
-        RequiredDocsCreateResponse response = JsonUtility.FromJson<RequiredDocsCreateResponse>(json);
-        //Debug.Log("response parse");
-        Debug.Log(JsonUtility.ToJson(response));
-        if (response.RDocCheck != null && mode == PageMode.Create)
-        {
-            GlobalData.RequiredDocsId = response.RDocCheck._id;
-            Debug.Log(GlobalData.RequiredDocsId);
-        }
-        else
-        {
-            Debug.LogError("doc not parsed");
-        }
-
+        ResponseMessage response = JsonUtility.FromJson<ResponseMessage>(json);
+        LoginMetaUI.Instance.Loader(false);
         UIEventSystem.TabGroupChange(TabGroups.InspectionCriteria);
     }
    

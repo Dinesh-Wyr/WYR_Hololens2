@@ -72,6 +72,9 @@ public class ProductItem : MonoBehaviour
         ProductID productID = new ProductID();
         productID.productId = GlobalData.productID;
         string url = GlobalData.ApiLink + APIEndpoints.Instance.startInspectionEndPoint;
+
+        LoginMetaUI.Instance.Loader(true);
+
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.POST, url, JsonUtility.ToJson(productID), callback: StartInspectionResponse));
 
     }

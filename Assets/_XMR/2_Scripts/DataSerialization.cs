@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-#region DataSerialization
+#region Geo Location
 
 [Serializable]
 public class GeoLocation
@@ -10,6 +10,10 @@ public class GeoLocation
     public double latitude;
     public double longitude;
 }
+
+#endregion
+
+#region Dashboard
 
 [Serializable]
 public class DashboardResponse
@@ -56,6 +60,51 @@ public class ResponseMessage
 {
     public string message;
 }
+
+#endregion
+
+#region Required Docs
+
+[Serializable]
+public class RequiredDocsGetResponse
+{
+    public string message;
+    public RequiredDocsGetData data;
+
+}
+
+[Serializable]
+public class RequiredDocsGetData
+{
+    public string _id;
+    public string productId;
+    public List<RequiredDocsGetField> field;
+    public string isCreatedBy;
+    public DateTime createdAt;
+    public DateTime updatedAt;
+    public int __v;
+}
+
+[Serializable]
+public class RequiredDocsGetField
+{
+    public string document;
+    public bool receivedClient;
+    public bool receivedVendor;
+    public bool NA;
+    public string remarks;
+    public string _id;
+}
+
+public class RequiredDocsUpdateData
+{
+    public string productId;
+    public List<RequiredDocsGetField> field;
+}
+
+#endregion
+
+#region Data Classes
 
 [Serializable]
 public class S3RequestData

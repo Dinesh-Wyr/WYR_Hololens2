@@ -21,6 +21,7 @@ public class DashboardManager : MonoBehaviour
 
         Debug.Log(uri);
 
+        LoginMetaUI.Instance.Loader(true);
         StartCoroutine(ApiCallUtility.Instance.APIRequest(Method.GET, uri,callback: LoadData));
     }
 

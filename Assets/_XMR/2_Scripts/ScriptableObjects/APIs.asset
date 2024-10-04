@@ -18,11 +18,12 @@ MonoBehaviour:
   GetCartonCountURL: https://ml.dev.wyrai.com/carton/carton_counter_fs
   loginEndPoint: registration/login
   dashboardEndPoint: metaQuest/dashboard/dashboardGet
+  startInspectionEndPoint: metaQuest/dashboard/inspectionStart
   GetS3EndPoint: videoInspection/image_S3
   S3PostCommentsEndPoint: videoInspection/image_Url
-  getDocsEndPoint: required_docs/docs_get
+  getDocsEndPoint: metaQuest/requiredDoc/requiredDocGet/
   addDocsEndPoint: required_docs/docs_add
-  updateDocsEndPoint: required_docs/docs_update
+  updateDocsEndPoint: metaQuest/requiredDoc/requiredDocUpdate
   getCriteriaEndPoint: inspection_criteria/criteriaGet
   addCriteriaEndPoint: inspection_criteria/criteriaAdd
   updateCriteriaEndPoint: inspection_criteria/criteriaUpdate

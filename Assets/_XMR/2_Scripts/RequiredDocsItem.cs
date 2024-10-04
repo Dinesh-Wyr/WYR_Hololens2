@@ -15,6 +15,8 @@ public class RequiredDocsRow
 public class RequiredDocsItem : MonoBehaviour
 {
     [SerializeField]
+    TextMeshProUGUI label;
+    [SerializeField]
     Toggle client;
     [SerializeField]
     Toggle vendor;
@@ -23,22 +25,27 @@ public class RequiredDocsItem : MonoBehaviour
     [SerializeField]
     TMP_InputField remarks;
 
-    public RequiredDocsRow GetData()
+    RequiredDocsGetField field = new RequiredDocsGetField();
+
+    public RequiredDocsGetField GetData()
     {
-        RequiredDocsRow row = new RequiredDocsRow();
-        row.client = client.isOn;
-        row.vendor = vendor.isOn;
-        row.not = notAvailable.isOn;
-        row.remarks = remarks.text;
-        return row;
+        field.receivedClient = client.isOn;
+        field.receivedVendor = vendor.isOn;
+        field.NA = notAvailable.isOn;
+        field.remarks = remarks.text;
+
+        return field;
     }
 
-    public void LoadData(RequiredDocsRow row)
+    public void PopulateRequiredDocsItem(RequiredDocsGetField field)
     {
-        client.isOn = row.client;
-        vendor.isOn = row.vendor;
-        notAvailable.isOn = row.not;
-        remarks.text = row.remarks;
+        this.field = field;
+
+        label.text = field.document;
+        client.isOn = field.receivedClient;
+        vendor.isOn = field.receivedVendor;
+        notAvailable.isOn = field.NA;
+        remarks.text = field.remarks;
     }
 
     public void SelectInputField()
